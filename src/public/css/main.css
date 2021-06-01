@@ -1,0 +1,87 @@
+
+body {
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color:slategray;
+    color: lightgray;
+    padding: 5px;    
+}
+
+button {    
+    border: 0px;
+    padding: 0px 18px;
+    height: 30px;
+    background-color: palegoldenrod;
+    letter-spacing: 2pt;
+}
+
+input[type="text"] {
+    padding: 0px 5px;
+    font-size: large;
+    color: rgb(90, 90, 90);
+    border: 0px;
+}
+
+input[type="text"]::-webkit-input-placeholder { /* Edge */
+    padding-left: 10px;
+    color:lightsteelblue;
+    font-style: italic;
+    letter-spacing: 3pt;
+}
+  
+input[type="text"]:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    padding-left: 10px;
+    color:lightsteelblue;
+    font-style: italic;
+    letter-spacing: 3pt;
+}
+  
+input[type="text"]::placeholder {
+    padding-left: 10px;
+    color:lightsteelblue;
+    font-style: italic;
+    letter-spacing: 3pt;
+}
+
+#app-container {
+    width: 100%;
+    margin: auto;
+}
+
+#title {
+    letter-spacing: 6pt;
+    font-size: xx-large;
+    width: 100%;
+    text-align: center;
+}
+
+#ui-container {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+}
+
+#message-container {
+    background-color: snow;
+    width: 100%;
+    height: 450px;
+    margin: 20px auto 10px;
+
+}
+
+#send-message-container {
+    width: 100%;
+    margin: 10px auto 10px;    
+}
+
+#send-message-container form {
+    display: flex;
+    flex-direction: row;
+}
+
+#send-message-container input {
+    width: 100%;
+    margin-right: 15px;
+    height: 30px;
+}
+
