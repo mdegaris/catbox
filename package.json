@@ -13,7 +13,9 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
+    "express-session": "^1.17.2",
     "http": "^0.0.1-security",
+    "jquery": "^3.6.0",
     "socket.io": "^4.1.2"
   },
   "devDependencies": {

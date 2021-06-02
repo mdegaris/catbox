@@ -1,87 +1,158 @@
 
-body {
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    background-color:slategray;
-    color: lightgray;
-    padding: 5px;    
+* {
+    padding: 0px;
+    margin: 0px;
+    border: 0px;
+    box-sizing: border-box;
+    font-weight: normal;
+    font-style: normal;
 }
 
-button {    
+
+body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    background-color: slategray;
+    color: lightgray;
+}
+
+button {
     border: 0px;
     padding: 0px 18px;
-    height: 30px;
-    background-color: palegoldenrod;
-    letter-spacing: 2pt;
+    /* margin-left: 20px; */
+    height: inherit;
+    background-color:tan;
+    letter-spacing: 2pt;    
 }
 
 input[type="text"] {
     padding: 0px 5px;
     font-size: large;
     color: rgb(90, 90, 90);
-    border: 0px;
+    height: inherit;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    background-color:papayawhip;
 }
 
 input[type="text"]::-webkit-input-placeholder { /* Edge */
-    padding-left: 10px;
+    padding-left: 8px;
     color:lightsteelblue;
     font-style: italic;
     letter-spacing: 3pt;
 }
   
 input[type="text"]:-ms-input-placeholder { /* Internet Explorer 10-11 */
-    padding-left: 10px;
+    padding-left: 8px;
     color:lightsteelblue;
     font-style: italic;
     letter-spacing: 3pt;
 }
   
 input[type="text"]::placeholder {
-    padding-left: 10px;
+    padding-left: 8px;
     color:lightsteelblue;
     font-style: italic;
     letter-spacing: 3pt;
 }
 
 #app-container {
-    width: 100%;
-    margin: auto;
+    height: 95vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
 }
 
 #title {
     letter-spacing: 6pt;
-    font-size: xx-large;
-    width: 100%;
+    font-size: xxx-large;
+    font-weight: bold;
     text-align: center;
+    background: -webkit-linear-gradient(bottom, #eeeeee, #939393);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 20px;
 }
 
-#ui-container {
-    width: 80%;
+#content {
+    width: 90%;
+    height: 80%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+#chat-container {
+    height: 100%;
+    width: 88%;
     display: flex;
     flex-direction: column;
-    margin: auto;
+    justify-content: flex-start;
+    align-items: center;
 }
 
-#message-container {
+#messages-container {
     background-color: snow;
+    color: dimgray;
     width: 100%;
-    height: 450px;
-    margin: 20px auto 10px;
-
+    padding: 10px 25px;
+    flex-grow: 95;
+    margin-bottom: 20px;
 }
 
-#send-message-container {
-    width: 100%;
-    margin: 10px auto 10px;    
+#send-container {
+    width: 100%;    
+    flex-grow: 5;
 }
 
-#send-message-container form {
+#send-form {
     display: flex;
     flex-direction: row;
-}
-
-#send-message-container input {
-    width: 100%;
-    margin-right: 15px;
+    flex-wrap: wrap;
+    align-items: center;
     height: 30px;
 }
 
+#send-input {
+    flex-grow: 95;
+    min-width: 140px;
+    user-select: none;
+}
+
+#send-button {    
+    flex-grow: 5;
+}
+
+#join-container {
+    height: 75%;
+    width: 50%;
+    display: flex;
+    flex-direction: column;    
+    justify-content: center;
+    align-items: center;
+}
+
+#join-form {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    height: 30px;
+    width: 100%;
+}
+
+#join-input {
+    flex-grow: 95;
+    min-width: 140px;
+}
+
+#join-button {
+    flex-grow: 5;
+}
