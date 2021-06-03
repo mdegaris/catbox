@@ -1,97 +1,159 @@
 
-* {
-    padding: 0px;
-    margin: 0px;
-    border: 0px;
-    box-sizing: border-box;
-    font-weight: normal;
-    font-style: normal;
+/* font-family: 'Odibee Sans', cursive;
+font-family: 'Roboto', sans-serif; */
+
+/* 
+#687864
+#31708E
+#5085A5
+#8FC1E3
+#F7F9FB 
+*/
+
+.colors {
+    background-color: #687864;
+    background-color: #31708E;
+    background-color: #5085A5;
+    background-color: #8FC1E3;
+    background-color: #F7F9FB;
+}
+
+.background-light {
+    background-color: #F7F9FB;
+}
+
+.color-light {
+    color: #F7F9FB;
+}
+
+.background-blue1 {
+    background-color: #8FC1E3;
+}
+
+.color-blue1 {
+    color: #8FC1E3;
 }
 
 
+.background-blue2 {
+    background-color: #5085A5;
+}
+
+.color-blue2 {
+    color: #5085A5;
+}
+
+
+.background-blue3 {
+    background-color: #31708E;
+}
+
+.color-blue3 {
+    color: #31708E;
+}
+
+.background-grey {
+    background-color: #687864;
+}
+
+.color-grey {
+    color: #687864;
+}
+
+.shadow {
+    box-shadow: 5px 10px rgb(0 0 0 / 30%);
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+    font-weight: normal;
+    font-style: normal;    
+}
+
+html {
+    font-size: 62.5%
+}
+
 body {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-    background-color: slategray;
-    color: lightgray;
+    font-family: 'Roboto', sans-serif; 
+    font-size: 2rem;
+    display: flex;
+    justify-content: center;    
 }
 
 button {
-    border: 0px;
-    padding: 0px 18px;
-    /* margin-left: 20px; */
-    height: inherit;
-    background-color:tan;
-    letter-spacing: 2pt;    
+    align-items: center;
+    height: 4rem;
+    justify-content: center;
+    align-items: center;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    font-size: inherit;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #5085A5;
 }
 
 input[type="text"] {
-    padding: 0px 5px;
-    font-size: large;
-    color: rgb(90, 90, 90);
     height: inherit;
+    font-size: inherit;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
 }
 
 input[type="text"]:focus {
-    outline: none;
-    background-color:papayawhip;
+    outline: none;    
 }
 
 input[type="text"]::-webkit-input-placeholder { /* Edge */
-    padding-left: 8px;
-    color:lightsteelblue;
+    padding-left: 1em;
+    color:#8FC1E3;
     font-style: italic;
-    letter-spacing: 3pt;
+    letter-spacing: 0.4em;
+    text-align: justify;
 }
   
 input[type="text"]:-ms-input-placeholder { /* Internet Explorer 10-11 */
-    padding-left: 8px;
-    color:lightsteelblue;
+    padding-left: 1em;
+    color:#8FC1E3;
     font-style: italic;
-    letter-spacing: 3pt;
-}
-  
-input[type="text"]::placeholder {
-    padding-left: 8px;
-    color:lightsteelblue;
-    font-style: italic;
-    letter-spacing: 3pt;
+    letter-spacing: 0.4em;
+    text-align: justify;
 }
 
+header {
+    font-family: 'Odibee Sans', cursive;
+    font-size: 5.5rem;
+    text-indent: 0.45rem;
+    letter-spacing: 0.45em;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+  
 #app-container {
-    height: 95vh;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    margin-left: 20px;
-    margin-right: 20px;
-    margin-top: 20px;
-}
-
-#title {
-    letter-spacing: 6pt;
-    font-size: xxx-large;
-    font-weight: bold;
-    text-align: center;
-    background: -webkit-linear-gradient(bottom, #eeeeee, #939393);
-    background-clip: text;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 20px;
 }
 
 #content {
-    width: 90%;
-    height: 80%;
+    height: 75vh;
     display: flex;
     align-items: center;
     flex-direction: column;
     justify-content: flex-start;
+    width: 80vw;
 }
 
 #chat-container {
     height: 100%;
-    width: 88%;
+    width: 80%;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -99,17 +161,17 @@ input[type="text"]::placeholder {
 }
 
 #messages-container {
-    background-color: snow;
-    color: dimgray;
     width: 100%;
-    padding: 10px 25px;
-    flex-grow: 95;
-    margin-bottom: 20px;
+    flex-grow: 19;
+    padding-top: 1rem;
+    padding-left: 1rem;
+    margin-bottom: 3rem;
+    font-size: inherit;
 }
 
 #send-container {
-    width: 100%;    
-    flex-grow: 5;
+    width: 100%;
+    flex-grow: 1;
 }
 
 #send-form {
@@ -117,17 +179,16 @@ input[type="text"]::placeholder {
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    height: 30px;
+    height: 4rem;
 }
 
 #send-input {
-    flex-grow: 95;
-    min-width: 140px;
+    flex-grow: 85;
     user-select: none;
 }
 
 #send-button {    
-    flex-grow: 5;
+    flex-grow: 15;
 }
 
 #join-container {

@@ -6,30 +6,31 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Odibee+Sans&family=Roboto&display=swap" 
+          rel="stylesheet">
     <link rel="stylesheet" href="/css/main.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script type="text/javascript" src="/js/main.js"></script>
-    <!-- <script type="text/javascript" src="/js/content-manager.js"></script> -->
 
     <title>ChatBox</title>
 </head>
 
-<body>
+<body class="background-light">
     <script srd="/socket.io/socket.io.js"></script>
-    <div id="app-container">
-        <h1 id="title">ChatBox</h1>
-        <div id="content">
-            <!-- <script type="text/javascript" src="/js/main.js"></script>
-            <div id="chat-container">
-                <div id="messages-container"></div>
-                <div id="send-container">
-                    <form id="send-form">
-                        <input id="send-input" type="text" placeholder="enter message" autocomplete="off" />
-                        <button id="send-button">SEND</button>
+    <div id="app-container" class="background-blue1">
+        <header class="background-blue1">ChatBox</header>
+        <div id="content" class="background-blue1">
+            <div id="chat-container" class="background-blue1">
+                <div id="messages-container" class="background-light"></div>
+                <div id="send-container" class="background-blue1">
+                    <form id="send-form" class="shadow">
+                        <input class="shadow" id="send-input" type="text" placeholder="enter message" autocomplete="off" />
+                        <button class="background-blue3 color-light shadow" id="send-button">SEND</button>
                     </form>
                 </div>
-            </div> -->
+            </div>
         </div>
     </div>
 </body>
