@@ -1,12 +1,16 @@
 
 
 function sendHandler(e) {
+    var socket = io();
+
     e.preventDefault();
     const messageContainer = document.getElementById('messages-container');
     const sendInput = document.getElementById('send-input');
     const msg = sendInput.value;
     if (msg && messageContainer) {
         messageContainer.innerText = msg;
+        socket.emit('chat message', msg);
+        sendInput.value = '';
     }
 }
 
@@ -15,7 +19,6 @@ function loginHandler(e) {
 }
 
 function addSendMessageListener() {
-    // const sendForm = $("#send-form");
     const sendForm = document.getElementById('send-form');
 
     if (sendForm) {
@@ -38,5 +41,5 @@ function addListeners() {
 
 
 $(() => {
-    $("#content").load("fragments.html #chat-container", () => addListeners() );
+    addListeners();
 });
