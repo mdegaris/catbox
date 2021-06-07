@@ -2,7 +2,7 @@
 127.0.1.1	marc-mintos
 192.168.0.77    www.degaris.uk
 192.168.0.77    marc.degaris.uk
-192.168.0.77    chatbox.degaris.uk
+192.168.0.77    cat.degaris.uk
 
 # The following lines are desirable for IPv6 capable hosts
 ::1     ip6-localhost ip6-loopback

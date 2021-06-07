@@ -1,14 +1,13 @@
-
+const socket = io();
 
 function sendHandler(e) {
-    var socket = io();
-
+    
     e.preventDefault();
     const messageContainer = document.getElementById('messages-container');
     const sendInput = document.getElementById('send-input');
     const msg = sendInput.value;
     if (msg && messageContainer) {
-        messageContainer.innerText = msg;
+        console.log(`Emit message to server: ${msg}`);
         socket.emit('chat message', msg);
         sendInput.value = '';
     }
@@ -34,6 +33,22 @@ function addLoginListener() {
     }
 }
 
+
+function appendMessage(message) {
+    messageList = document.getElementById('message-list');
+    newItem = document.createElement('li');
+
+    newItem.textContent = message;
+    messageList.append(newItem);
+    
+}
+
+// function initMessageList() {
+//     console.log(`Emit message to server: ${msg}`);
+//     socket.emit('chat message', msg);
+//     sendInput.value =
+// }
+
 function addListeners() {
     addSendMessageListener();
     // addLoginListener();
@@ -42,4 +57,9 @@ function addListeners() {
 
 $(() => {
     addListeners();
+
+    socket.on('chat message', (msg) => {
+        console.log(`Got message: ${msg}`);
+        appendMessage(msg);
+    });
 });
