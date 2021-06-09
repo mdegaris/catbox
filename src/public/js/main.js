@@ -1,7 +1,7 @@
 const socket = io();
+var isInitialised = false;
 
 function sendHandler(e) {
-    
     e.preventDefault();
     const messageContainer = document.getElementById('messages-container');
     const sendInput = document.getElementById('send-input');
@@ -13,10 +13,6 @@ function sendHandler(e) {
     }
 }
 
-function loginHandler(e) {
-    e.preventDefault();
-}
-
 function addSendMessageListener() {
     const sendForm = document.getElementById('send-form');
 
@@ -25,41 +21,59 @@ function addSendMessageListener() {
     }
 }
 
-function addLoginListener() {
-    const joinForm = $("#join-form");
-
-    if (joinForm) {
-        joinForm.addEventListener('submit', e => loginHandler(e));
-    }
-}
-
-
 function appendMessage(message) {
     messageList = document.getElementById('message-list');
     newItem = document.createElement('li');
 
     newItem.textContent = message;
     messageList.append(newItem);
-    
-}
 
-// function initMessageList() {
-//     console.log(`Emit message to server: ${msg}`);
-//     socket.emit('chat message', msg);
-//     sendInput.value =
-// }
-
-function addListeners() {
-    addSendMessageListener();
-    // addLoginListener();
+    messageList.scrollTop = messageList.scrollHeight;
 }
 
 
-$(() => {
-    addListeners();
+function addSocketListeners() {
+
+    socket.on('initialise', (initMsgList) => {
+        if (!isInitialised) {
+            for (m of JSON.parse(initMsgList)) {
+                appendMessage(m);
+            }
+        }
+
+        isInitialised = true;
+    });
 
     socket.on('chat message', (msg) => {
         console.log(`Got message: ${msg}`);
         appendMessage(msg);
     });
+}
+
+function addListeners() {
+    addSendMessageListener();
+    addSocketListeners();
+}
+
+
+$(() => {
+    addListeners();
+    socket.emit('initialise');
 });
+
+
+
+
+
+
+// function loginHandler(e) {
+//     e.preventDefault();
+// }
+
+// function addLoginListener() {
+//     const joinForm = $("#join-form");
+
+//     if (joinForm) {
+//         joinForm.addEventListener('submit', e => loginHandler(e));
+//     }
+// }

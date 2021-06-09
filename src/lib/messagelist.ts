@@ -8,6 +8,7 @@ export class MessageList {
         this.list.push(msg);
     }    
 
+
     public toStringList() : Array<string> {
         let strList : Array<string> = new Array();
 
@@ -17,6 +18,11 @@ export class MessageList {
 
         return strList;
     }
+
+    public toJSON() : string {
+        return JSON.stringify(this.toStringList());
+    }
+
 
     constructor() {
         this.list = new Array();

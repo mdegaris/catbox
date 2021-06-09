@@ -26,6 +26,13 @@ socketServer.on('connection', (socket) => {
   });  
 });
 
+socketServer.on('connection', (socket) => {
+  socket.on('initialise', () => {
+    console.log('Initialise messages...');
+    socketServer.emit('initialise', msgList.toJSON());
+  });  
+});
+
 
 httpServer.listen(PORT, () => {
   console.log('Listening on *:' + PORT);
