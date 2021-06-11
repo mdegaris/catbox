@@ -99,8 +99,16 @@ input[type=text] {
     border-radius: 1.5em 0 0 1.5em;
 }
 
-input[type=text]::placeholder {
+::placeholder {
     color: var(--clr-primary-light2);
+    filter: brightness(50%);
+    text-decoration: italic;
+}
+
+::-webkit-input-placeholder {
+    color: var(--clr-primary-light2);
+    filter: brightness(50%);
+    text-decoration: italic;
 }
 
 input:focus, input:hover, input:active, 
@@ -137,7 +145,7 @@ li {
 }
 
 li:nth-child(even) {
-    background: #00000020;
+    background: #00000010;
 }
 
 .bg-light1 {
@@ -147,7 +155,6 @@ li:nth-child(even) {
 .fg-light1 {
     color: var(--clr-primary-light1);
 }
-
 
 .bg-light2 {
     background: var(--clr-primary-light2);
@@ -165,7 +172,6 @@ li:nth-child(even) {
 .fg-light3 {
     color: var(--clr-primary-light3);
 }
-
 
 .bg-highlight {
     background: var(--clr-primary-highlight);
