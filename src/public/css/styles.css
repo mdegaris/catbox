@@ -14,8 +14,8 @@
 
 :root {
     --clr-primary-light2: #5A1619;    
-    --clr-primary-light1: #D1E7E0;
-    --clr-primary-light3: #FFF4F2;
+    --clr-primary-light3: #D1E7E0;
+    --clr-primary-light1: #FFF4F2;
     --clr-primary-highlight: #EE6463;
 }
 
@@ -99,23 +99,22 @@ input[type=text] {
     border-radius: 1.5em 0 0 1.5em;
 }
 
-::placeholder {
+input[type=text]::placeholder {
     color: var(--clr-primary-light2);
-    filter: brightness(50%);
-    text-decoration: italic;
+    opacity: 0.5;
+    font-style: italic;
 }
 
-::-webkit-input-placeholder {
+input[type=text]::-webkit-input-placeholder {
     color: var(--clr-primary-light2);
-    filter: brightness(50%);
-    text-decoration: italic;
+    opacity: 0.5;
+    font-style: italic;
 }
 
 input:focus, input:hover, input:active, 
 button:focus, button:hover, button:active {    
     animation: flash .5s linear;
 }
-
 
 button {
     display: inline-block;
