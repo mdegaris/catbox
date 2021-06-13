@@ -1,18 +1,26 @@
+import { User } from "./user";
+
 export class Message {
 
     private text: string;
     private timestamp: Date;
+    private user: User;
 
     public getText(): string {
-        return this.text;
+        return `${this.user.getUsername()} : ${this.text}`;
     }    
 
     public getTimestamp(): Date {
         return this.timestamp;
     }
 
-    constructor(txt: string, ts: Date) {
+    public getUser(): User {
+        return this.user;
+    }
+
+    constructor(txt: string, ts: Date, usr: User) {
         this.text = txt;
         this.timestamp = ts;
+        this.user = usr;
     }
 }

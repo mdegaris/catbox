@@ -6,7 +6,7 @@
   "scripts": {
     "host": "nodemon",
     "watch": "watch 'npm run build' ./src",
-    "build": "tsc && copyfiles -Vu 2 src/public/*.html src/public/*.ico src/public/**/* dist/public"
+    "build": "tsc && copyfiles -Vu 2 src/public/*.html src/public/*.ico src/public/**/**/* dist/public"
   },
   "keywords": [],
   "author": "Marc de Garis",
@@ -21,7 +21,9 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.12",
+    "@types/express-session": "^1.17.3",
     "copyfiles": "^2.4.1",
-    "watch": "^1.0.2"
+    "watch": "^0.13.0",
+    "webpack": "^5.38.1"
   }
 }
