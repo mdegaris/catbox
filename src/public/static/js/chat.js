@@ -1,4 +1,4 @@
-const socket = io();
+var isInitialised = false;
 const content = '_chat.html';
 
 /**
@@ -6,7 +6,7 @@ const content = '_chat.html';
  * text input field.
  * @param {Event} e Send forn submit event
  */
-function sendHandler(e) {
+function sendHandler(e, socket) {
     e.preventDefault();
     const messageContainer = document.getElementById('messages-container');
     const sendInput = document.getElementById('text-input');
@@ -21,10 +21,10 @@ function sendHandler(e) {
 /**
  * Add the send form's event handler.
  */
-function addSendMessageListener() {
+function addSendMessageListener(socket) {
     const sendForm = document.getElementById('send-form');
     if (sendForm) {
-        sendForm.addEventListener('submit', e => sendHandler(e));
+        sendForm.addEventListener('submit', e => sendHandler(e, socket));
     }
 }
 
@@ -58,12 +58,15 @@ function appendSystemMessage(message) {
  * Add all the socket listeners used for chatting.
  * @param {Socket} socket Main chat socket.io Socket
  */
-function addSocketListeners() {
+function addSocketListeners(socket) {
 
-    socket.on('init-chat', (initMsgList) => {
+    socket.on('load-recent-chat', (initMsgList) => {
+        console.log('load-recent-chat');
         if (!isInitialised) {
-            for (m of JSON.parse(initMsgList)) {
-                appendMessage(m);
+            for (let m of JSON.parse(initMsgList)) {
+                if (m) {
+                    appendMessage(m);
+                }
             }
         }
         isInitialised = true;
@@ -93,29 +96,29 @@ function _doLoad(containerId) {
 function _addListeners(socket) {
     console.log('Add chat listeners...');
     addSocketListeners(socket);
-    addSendMessageListener();
+    addSendMessageListener(socket);
 }
 
-function _init() {
+function _init(socket) {
     console.log('init-chat...');
-    socket.emit('initialise');
+    socket.emit('init-chat');
 }
 
-function _postLoad() {
-    _addListeners();
-    _init();
+function _postLoad(socket) {
+    _addListeners(socket);
+    _init(socket);
 }
 
-async function _loadContent(containerId) {
+async function _loadContent(containerId, socket) {
     await _doLoad(containerId);
 
     return new Promise((resolve, _) => {
-        _postLoad();
+        _postLoad(socket);
         resolve();
     });
 }
 
-export async function load(containerId) {
-    await _loadContent(containerId);
+export async function load(containerId, socket) {
+    await _loadContent(containerId, socket);
 }
 

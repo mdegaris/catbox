@@ -1,8 +1,8 @@
-const socket = io();
+
 const content = '_join.html';
 
 
-function loginHandler(e) {
+function loginHandler(e, socket) {
     e.preventDefault();
     const joinInput = document.getElementById('text-input');
     const user = joinInput.value;
@@ -13,10 +13,10 @@ function loginHandler(e) {
     }    
 }
 
-function addLoginListener() {
+function addLoginListener(socket) {
     const joinForm = document.getElementById('join-form');
     if (joinForm) {
-        joinForm.addEventListener('submit', e => loginHandler(e));
+        joinForm.addEventListener('submit', e => loginHandler(e, socket));
     }
 }
 
@@ -30,23 +30,23 @@ function _doLoad(containerId) {
 
 function _addListeners(socket) {
     console.log('Add join listeners...');
-    addLoginListener();
+    addLoginListener(socket);
 }
 
-function _postLoad() {
-    _addListeners();
+function _postLoad(socket) {
+    _addListeners(socket);
 }
 
-async function _loadContent(containerId) {
+async function _loadContent(containerId, socket) {
     await _doLoad(containerId);
 
     return new Promise((resolve, _) => {
-        _postLoad();
+        _postLoad(socket);
         resolve();
     });
 }
 
-export async function load(containerId) {
-    await _loadContent(containerId);
+export async function load(containerId, socket) {
+    await _loadContent(containerId, socket);
 }
 

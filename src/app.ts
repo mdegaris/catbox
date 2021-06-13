@@ -1,5 +1,5 @@
 import express from 'express';
-import session from 'express-session';
+import socketio from 'socket.io';
 import path from 'path';
 
 import { Config } from './conf/config';
@@ -19,24 +19,19 @@ var currentUser = User.UNDEFINED_USER;
 
 mainApp.get('/', (_req, res) => {
   res.sendFile(path.join(__dirname, 'public', '/main.html'));
-  // if (currentUser.equals(User.UNDEFINED_USER)) {
-  //   res.sendFile(path.join(__dirname, 'public', '/main.html'));
-  // } else {
-  //   res.sendFile(path.join(__dirname, 'public', '/chat.html'));
-  // }
 });
 
 mainApp.use(logger);
-
 mainApp.use(express.static(path.join(__dirname, 'public', 'static')));
 
 
 let defaultChatroom = new ChatRoom(Config.DEFAULT_CHATROOM_NAME);
 // defaultChatroom.getUserList().addUser(User.TEST_USER);
 
-function initHandler() {
-  console.log('Initialise messages.');
-  socketServer.emit('initialise', defaultChatroom.getMessageList().toJSON());
+function initHandler(socket: socketio.Socket) {
+  let recentMsgJSON = defaultChatroom.getMessageList().toJSON();
+  console.log('Initialise messages...');
+  socket.emit('load-recent-chat', recentMsgJSON);
 }
 
 function chatHandler(msg: string) {
@@ -47,7 +42,7 @@ function chatHandler(msg: string) {
   socketServer.emit('chat-message', newMsg.getText());
 }
 
-function userJoinHandler(user: string) {
+function userJoinHandler(user: string, socket: socketio.Socket) {
   
   console.log(`Received join-request new user: ${user}`);
 
@@ -55,8 +50,8 @@ function userJoinHandler(user: string) {
   defaultChatroom.getUserList().addUser(newUser);
   currentUser = newUser;
   
-  socketServer.emit('load-chat');
-  console.log('Load the chat window.');
+  let r = socket.emit('load-chat');
+  console.log('Load the chat window. ' + socket.id);
 
   let joinedMsg = new Message(`${user} has joined the chat.`, new Date(), User.SYSTEM_USER);
   socketServer.emit('system-message', joinedMsg.getText());
@@ -70,10 +65,14 @@ socketServer.on('connection', ((socket) => {
 
   console.log('Client connected. Socket ID: ' + socket.id);
 
-  socket.on('initialise', initHandler);
   socket.on('disconnect', disconnectHandler);
   socket.on('chat-message', chatHandler);
-  socket.on('join-request', userJoinHandler);
+  socket.on('join-request', (user) => {
+    userJoinHandler(user, socket);
+  });
+  socket.on('init-chat', () => {
+    initHandler(socket);
+  });
 
 }));
 
