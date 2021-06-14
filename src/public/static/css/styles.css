@@ -1,0 +1,260 @@
+:root {
+    --clr-primary-light2: #5A1619;    
+    --clr-primary-light3: #D1E7E0;
+    --clr-primary-light1: #FFF4F2;
+    --clr-primary-highlight: #EE6463;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    box-sizing: border-box;    
+}
+
+
+@keyframes flash {
+  0% {
+    filter: brightness(100%);
+  }   
+  25% {
+    filter: brightness(80%);
+  }
+  100% {
+    filter: brightness(100%);
+  }
+}
+
+
+@keyframes spin {  
+  0% {
+    transform: rotate(0deg) scale(0);
+  }   
+  10% {
+    transform: rotate(180deg) scale(.1);
+  }     
+  40% {
+    transform: rotate(360deg) scale(.2);
+  }    
+  60% {
+    transform: rotate(540deg)  scale(.3);
+  }     
+  80% {
+    transform: rotate(720deg) scale(.5);
+  } 
+  90% {
+    transform: rotate(900deg) scale(.7);
+  } 
+  100% {
+    transform: rotate(1080deg) scale(1);
+  } 
+}
+
+
+@keyframes fade-in {
+   0% {opacity: 0;}
+   100% {opacity: 1;}
+} 
+
+html {
+    font-size: 62.5%
+}
+
+body {
+    line-height: 1.5;
+    font-weight: normal;
+    font-style: normal;
+    font-family: 'Roboto', sans-s;    
+    font-size: 1.8rem;
+}
+
+header {
+    margin: 0.5rem 0 1rem;
+    text-align: center;
+}
+
+h1 {
+    font-size: 5rem;
+    font-family: 'Anton', sans-serif;
+    letter-spacing: 0.1em;
+    text-indent: 0.2em;
+    min-width: 32rem;
+}
+
+input[type=text] {
+    background: var(--clr-primary-light1);    
+    padding: 1em 1em;
+    border-radius: 2rem 0 0 2rem;
+    outline: none;
+}
+
+input[type=text]::placeholder {
+    color: var(--clr-primary-light2);
+    opacity: 0.5;
+    font-style: italic;
+}
+
+input[type=text]::-webkit-input-placeholder {
+    color: var(--clr-primary-light2);
+    opacity: 0.5;
+    font-style: italic;
+}
+
+input:focus, input:hover, input:active, 
+button:focus, button:hover, button:active {    
+    animation: flash .5s linear;
+}
+
+button {
+    display: inline-block;
+    color: var(--clr-primary-light2);
+    border-radius: 0 2em 2em 0;
+    cursor: pointer;
+    outline: none;
+    font-size: 0.67em;
+    font-weight: bold;
+    letter-spacing: 0.2em;
+}
+
+button:hover {
+    animation: flash .5s linear;
+}
+
+footer {
+    font-size: 1.2rem;
+    font-style: italic;
+    text-align: center;
+}
+  
+ul {
+    height: 100%;
+    overflow-y: auto;
+}
+
+li {
+    list-style: none;
+    word-break: break-word;
+}
+
+li:nth-child(even) {
+    background: #00000010;
+}
+
+.bg-light1 {
+    background: var(--clr-primary-light1);
+}
+
+.fg-light1 {
+    color: var(--clr-primary-light1);
+}
+
+.bg-light2 {
+    background: var(--clr-primary-light2);
+}
+
+.fg-light2 {
+    color: var(--clr-primary-light2);
+}
+
+.bg-light3 {
+    background: var(--clr-primary-light3);
+}
+
+.fg-light3 {
+    color: var(--clr-primary-light3);
+}
+
+.bg-highlight {
+    background: var(--clr-primary-highlight);
+}
+
+.fg-highlight {
+    color: var(--clr-primary-highlight);
+}
+
+.shadow {
+    box-shadow: 5px 10px #00000040;
+}
+
+.cat-icon {
+    width: 0.85em;
+    object-fit: cover;
+    display: inline-block;
+    animation: spin 1.5s linear, fade-in 1.5s ease-in;
+}
+
+.main-content {
+    margin: 0 auto;
+    padding: 0 1rem;
+    min-height: 100%;
+}
+
+.container {
+    border-radius: 2rem;
+    min-height: 100%;
+    margin: 0 auto 1rem;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.chat-container {
+    width: 109rem;
+    max-width: 100%;
+}
+
+.join-container {
+    width: 90rem;
+    max-width: 100%;
+    margin-top: 9rem;
+}
+
+.chat-text {
+    font-size: 1.8rem;
+}
+
+.system-message {
+    font-style: italic;
+}
+
+#messages-container {
+    height: 59vh;
+    min-height: 14rem;
+    width: 100%;
+    border-radius: 2rem;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+#send-container {
+    width: 100%;
+}
+
+#send-form {
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 4rem;
+}
+
+#join-form {
+    display:flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    height: 4rem;
+    width: 100%;
+}
+
+#text-input {
+    height: 100%;
+    width: 100%;
+}
+
+#send-button {
+    height: 100%;
+    min-width: 6rem;
+    z-index: 1;
+}
