@@ -43,6 +43,10 @@ export class User {
         return this.ipAddress;
     }
 
+    public setTimeJoined(d: Date) {
+        this.timeJoined = d;
+    }
+
     public getTimeJoined(): Date {
         return this.timeJoined;
     }
@@ -62,6 +66,16 @@ export class User {
         } else {
             return true;
         }
+    }
+
+    public toString(): string {
+        let json = {
+            username: this.username,
+            ipAddress: this.ipAddress,
+            timeJoined: this.timeJoined.getTime().toString()
+        };
+
+        return JSON.stringify(json);
     }
 
     constructor(un: string, ip: string, dt: Date) {

@@ -12,6 +12,7 @@ import { User } from './lib/user';
 
 
 let SOCKET_USER_MAP = new Map();
+let IP_USER_MAP = new Map();
 
 
 const sessionMiddleware = session({
@@ -60,19 +61,31 @@ function chatHandler(msg: string, socket: socketio.Socket) {
 
 // =================================================================
 
-function userJoinHandler(user: string, socket: socketio.Socket) {
-  
-  console.log(`Received join-request new user: ${user}`);
-
-  let newUser = new User(user, '127.0.0.1', new Date());
+function userJoinHandler(username: string, socket: socketio.Socket) {
+    
+  let newUser = new User(username, socket.handshake.address, new Date());
   defaultChatroom.getUserList().addUser(newUser);
   
   SOCKET_USER_MAP.set(socket.id, newUser);
-  
-  socket.emit('load-chat');
-  console.log(`Load the chat window. ${socket.id}`);
+  IP_USER_MAP.set(newUser.getIpAddress(), newUser);
 
-  let joinedMsg = new Message(`${user} has joined the chat.`, new Date(), User.SYSTEM_USER);
+  console.log(`Received join-request new user: ${newUser.toString()}`);
+  socket.emit('load-chat');
+
+  let joinedMsg = new Message(`${username} has joined the chat.`, new Date(), User.SYSTEM_USER);
+  socketServer.emit('system-message', joinedMsg.getText());
+}
+
+// =================================================================
+
+function rejoin(user: User, socket: socketio.Socket) {
+  
+  user.setTimeJoined(new Date());
+  SOCKET_USER_MAP.set(socket.id, user);
+
+  console.log(`User rejoined: ${user.toString()}`);
+  
+  let joinedMsg = new Message(`${user.getUsername()} has rejoined the chat.`, new Date(), User.SYSTEM_USER);
   socketServer.emit('system-message', joinedMsg.getText());
 }
 
@@ -84,9 +97,25 @@ function disconnectHandler(reason: string) {
 
 // =================================================================
 
+function bootstrapHandler(socket: socketio.Socket) {
+  const addr = socket.handshake.address;
+  if (IP_USER_MAP.has(addr)) {
+    rejoin(IP_USER_MAP.get(addr), socket);
+    socket.emit('load-chat');
+  } else {
+    socket.emit('load-join');
+  }
+}
+
+// =================================================================
+
 socketServer.on('connection', ((socket) => {
 
   console.log(`Client connected. Socket ID: ${socket.id}`);
+
+  socket.on('bootstrap', () => {
+    bootstrapHandler(socket);
+  });
 
   socket.on('disconnect', disconnectHandler);
   socket.on('chat-message', (msg) => {
