@@ -4,6 +4,7 @@ import {load as loadJoin} from './join.js';
 
 const socket = io();
 
+console.log('Bootstrap app.');
 socket.emit('bootstrap');
 
 

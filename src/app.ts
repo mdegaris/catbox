@@ -17,7 +17,9 @@ let IP_USER_MAP = new Map();
 
 const sessionMiddleware = session({
   secret: 'loki',
-  cookie: {maxAge: 120000}
+  cookie: {maxAge: 120000},
+  resave: true,
+  saveUninitialized: true
 });
 
 const logger = (req: express.Request, res: express.Response, next: express.NextFunction) => {
@@ -38,7 +40,7 @@ mainApp.use(express.static(path.join(__dirname, 'public', 'static')));
 
 // =================================================================
 
-let defaultChatroom = new ChatRoom(Config.DEFAULT_CHATROOM_NAME);
+const defaultChatroom = new ChatRoom(Config.DEFAULT_CHATROOM_NAME);
 
 // =================================================================
 
@@ -98,13 +100,15 @@ function disconnectHandler(reason: string) {
 // =================================================================
 
 function bootstrapHandler(socket: socketio.Socket) {
-  const addr = socket.handshake.address;
-  if (IP_USER_MAP.has(addr)) {
-    rejoin(IP_USER_MAP.get(addr), socket);
-    socket.emit('load-chat');
-  } else {
-    socket.emit('load-join');
-  }
+  // const addr = socket.handshake.address;
+  // if (IP_USER_MAP.has(addr)) {
+  //   rejoin(IP_USER_MAP.get(addr), socket);
+  //   socket.emit('load-chat');
+  // } else {
+  //   socket.emit('load-join');
+  // }
+
+  socket.emit('load-join');
 }
 
 // =================================================================
