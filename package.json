@@ -6,7 +6,7 @@
   "scripts": {
     "host": "nodemon",
     "watch": "watch 'npm run build' ./src",
-    "build": "tsc && copyfiles -Vu 2 src/public/*.html src/public/*.ico src/public/**/**/* dist/public"
+    "build": "tsc && copyfiles -u 2 src/public/*.html src/public/*.ico src/public/**/**/* dist/public"
   },
   "keywords": [],
   "author": "Marc de Garis",

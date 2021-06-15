@@ -1,5 +1,13 @@
+import dom from './dom.js';
+
 var isInitialised = false;
 const content = '_chat.html';
+
+
+function isValidMessageString(str) {
+    return (str && (str.trim().length) > 0) ? true : false;
+}
+
 
 /**
  * Uses a socket to emit a message entered in the send form's
@@ -8,25 +16,14 @@ const content = '_chat.html';
  */
 function sendHandler(e, socket) {
     e.preventDefault();
-    const messageContainer = document.getElementById('messages-container');
-    const sendInput = document.getElementById('text-input');
-    const msg = sendInput.value;
-    if (msg && messageContainer) {
+    const msg = dom.sendInput().value;
+    if (isValidMessageString(msg)) {
         console.log(`Emit message to server: ${msg}`);
         socket.emit('chat-message', msg);
-        sendInput.value = '';
+        dom.sendInput().value = '';
     }
 }
 
-/**
- * Add the send form's event handler.
- */
-function addSendMessageListener(socket) {
-    const sendForm = document.getElementById('send-form');
-    if (sendForm) {
-        sendForm.addEventListener('submit', e => sendHandler(e, socket));
-    }
-}
 
 /**
  * Append a new message string to the current list of messages.
@@ -34,7 +31,7 @@ function addSendMessageListener(socket) {
  * @param {boolean} isSystem Indicates if this is a special system-message.
  */
 function appendMessage(message, isSystem = false) {
-    const messageList = document.getElementById('message-list');
+
     const newItem = document.createElement('li');
 
     if (isSystem) {
@@ -42,8 +39,8 @@ function appendMessage(message, isSystem = false) {
     }
 
     newItem.textContent = message;
-    messageList.append(newItem);
-    messageList.scrollTop = messageList.scrollHeight;
+    dom.messageList().append(newItem);
+    dom.messageList().scrollTop = dom.messageList().scrollHeight;
 }
 
 /**
@@ -58,7 +55,7 @@ function appendSystemMessage(message) {
  * Add all the socket listeners used for chatting.
  * @param {Socket} socket Main chat socket.io Socket
  */
-function addSocketListeners(socket) {
+function _addSocketListeners(socket) {
 
     socket.on('load-recent-chat', (initMsgList) => {
         console.log('load-recent-chat');
@@ -84,19 +81,19 @@ function addSocketListeners(socket) {
 }
 
 
-function _doLoad(containerId) {
+async function _doLoad(containerId) {
     
-    let container = document.getElementById(containerId);
-    return fetch(`/content/${content}`)
-                .then(response => response.text())
-                .then(contentHtml => { container.innerHTML = contentHtml; });
+    const container = document.getElementById(containerId);
+    const response = await fetch(`/content/${content}`);
+    const contentHtml = await response.text();
+    container.innerHTML = contentHtml;
 }
 
 
 function _addListeners(socket) {
-    console.log('Add chat listeners...');
-    addSocketListeners(socket);
-    addSendMessageListener(socket);
+    console.log('Add chat listeners...');    
+    dom.sendForm().addEventListener('submit', e => sendHandler(e, socket));
+    _addSocketListeners(socket);
 }
 
 function _init(socket) {
@@ -107,11 +104,12 @@ function _init(socket) {
 function _postLoad(socket) {
     _addListeners(socket);
     _init(socket);
+    dom.sendInput().focus();
 }
 
 async function _loadContent(containerId, socket) {
-    await _doLoad(containerId);
 
+    await _doLoad(containerId);
     return new Promise((resolve, _) => {
         _postLoad(socket);
         resolve();
@@ -119,6 +117,7 @@ async function _loadContent(containerId, socket) {
 }
 
 export async function load(containerId, socket) {
+    console.log('Chat page loader.');  
     await _loadContent(containerId, socket);
 }
 
