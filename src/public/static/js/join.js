@@ -2,7 +2,7 @@ import dom from './dom.js';
 
 const content = '_join.html';
 
-function loginHandler(e, socket) {
+function joinHandler(e, socket) {
     e.preventDefault();
     const username = dom.joinInput().value;
     if (username) {
@@ -22,7 +22,7 @@ async function _doLoad(containerId) {
 
 function _addListeners(socket) {
     console.log('Add join listeners...');
-    dom.joinForm().addEventListener('submit', e => loginHandler(e, socket));
+    dom.joinForm().addEventListener('submit', e => joinHandler(e, socket));
 }
 
 function _postLoad(socket) {

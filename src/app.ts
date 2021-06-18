@@ -100,15 +100,17 @@ function disconnectHandler(reason: string) {
 // =================================================================
 
 function bootstrapHandler(socket: socketio.Socket) {
-  // const addr = socket.handshake.address;
-  // if (IP_USER_MAP.has(addr)) {
-  //   rejoin(IP_USER_MAP.get(addr), socket);
-  //   socket.emit('load-chat');
-  // } else {
-  //   socket.emit('load-join');
-  // }
 
-  socket.emit('load-join');
+  const addr = socket.handshake.address;
+
+  console.log(`Bootstrap chat. Socket ID: ${socket.id}, Addr: ${addr}`);
+
+  if (IP_USER_MAP.has(addr)) {
+    rejoin(IP_USER_MAP.get(addr), socket);
+    socket.emit('load-chat');
+  } else {
+    socket.emit('load-join');
+  }
 }
 
 // =================================================================
