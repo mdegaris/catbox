@@ -1,5 +1,5 @@
-import { Config } from '../conf/config';
-import { MessageList } from './messagelist';
+import { Config } from '../../conf/config';
+import { MessageList } from '../chat/messagelist';
 
 
 const NON_IP = 'xx.xx.xx.xx';
@@ -10,16 +10,16 @@ enum ReservedUsername {
     TEST = '__testuser__'
 }
 
-export class User {
+class User {
 
     public static readonly SYSTEM_USER: User
-                        = User.createSpecialUser(ReservedUsername.SYSTEM);
+        = User.createSpecialUser(ReservedUsername.SYSTEM);
 
     public static readonly UNDEFINED_USER: User
-                        = User.createSpecialUser(ReservedUsername.UNDEFINED);
+        = User.createSpecialUser(ReservedUsername.UNDEFINED);
 
     public static readonly TEST_USER: User
-                        = User.createSpecialUser(ReservedUsername.TEST);
+        = User.createSpecialUser(ReservedUsername.TEST);
 
     static createSpecialUser(un: string): User {
         return new User(un, NON_IP, new Date());
@@ -86,3 +86,4 @@ export class User {
     }
 }
 
+export { User };

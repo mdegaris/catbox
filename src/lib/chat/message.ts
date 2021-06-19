@@ -1,6 +1,6 @@
-import { User } from "./user";
+import { User } from "../user/user";
 
-export class Message {
+class Message {
 
     private text: string;
     private timestamp: Date;
@@ -8,7 +8,7 @@ export class Message {
 
     public getText(): string {
         return `${this.user.getUsername()} : ${this.text}`;
-    }    
+    }
 
     public getTimestamp(): Date {
         return this.timestamp;
@@ -24,3 +24,5 @@ export class Message {
         this.user = usr;
     }
 }
+
+export { Message };

@@ -41,7 +41,7 @@ body {
 }
 
 header {   
-    flex: 0 1 auto;
+    flex: 0 0 auto;
     margin-top: 2rem;
 }
 
@@ -106,7 +106,7 @@ footer {
     font-size: 1.2rem;
     font-style: italic;
     text-align: center;
-    flex: 0 0 4rem;
+    flex: 0 0 3rem;
 }
   
 ul {

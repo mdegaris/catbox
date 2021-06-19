@@ -1,22 +1,22 @@
-import {Message} from './message';
+import { Message } from './message';
 
-export class MessageList {
+class MessageList {
 
-    private list : Array<Message>;
-    private latestMessageTime : Date|null;
+    private list: Array<Message>;
+    private latestMessageTime: Date | null;
 
 
-    public getLastMessageTime() : Date|null {
+    public getLastMessageTime(): Date | null {
         return this.latestMessageTime;
     }
 
     public addMessage(msg: Message) {
         this.latestMessageTime = msg.getTimestamp();
         this.list.push(msg);
-    }    
+    }
 
-    public toStringList() : Array<string> {
-        let strList : Array<string> = new Array<string>();
+    public toStringList(): Array<string> {
+        let strList: Array<string> = new Array<string>();
 
         for (let m of this.list) {
             strList.push(m.getText());
@@ -25,7 +25,7 @@ export class MessageList {
         return strList;
     }
 
-    public toJSON() : string {
+    public toJSON(): string {
         return JSON.stringify(this.toStringList());
     }
 
@@ -34,3 +34,5 @@ export class MessageList {
         this.latestMessageTime = null;
     }
 }
+
+export { MessageList };

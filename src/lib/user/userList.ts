@@ -1,7 +1,7 @@
 import { User } from "./user";
 
 
-export class UserList {
+class UserList {
 
     private userList: Array<User>;
 
@@ -25,7 +25,7 @@ export class UserList {
 
     public removeUser(u: User) {
         if (this.containsUser(u)) {
-            this.userList = 
+            this.userList =
                 this.userList.filter((u) => {
                     return (u.getUsername() != u.getUsername());
                 });
@@ -40,8 +40,9 @@ export class UserList {
         return this.userList;
     }
 
-
     constructor() {
         this.userList = new Array<User>();
     }
 }
+
+export { UserList };

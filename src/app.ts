@@ -6,9 +6,9 @@ import cookieParse from 'cookie-parser';
 
 import { Config } from './conf/config';
 import { mainApp, httpServer, socketServer } from './create-app-objs';
-import { Message } from './lib/message';
-import { ChatRoom } from './lib/chatRoom';
-import { User } from './lib/user';
+import { Message } from './lib/chat/message';
+import { ChatRoom } from './lib/chat/chatRoom';
+import { User } from './lib/user/user';
 
 
 let SOCKET_USER_MAP = new Map();
@@ -27,14 +27,16 @@ const logger = (req: express.Request, res: express.Response, next: express.NextF
   next();
 }
 
+// =================================================================
+
 mainApp.get('/', (_req, res) => {
   res.sendFile(path.join(__dirname, 'public', '/main.html'));
 });
 
 // =================================================================
 
-mainApp.use(cookieParse());
-mainApp.use(sessionMiddleware);
+// mainApp.use(cookieParse());
+// mainApp.use(sessionMiddleware);
 mainApp.use(logger);
 mainApp.use(express.static(path.join(__dirname, 'public', 'static')));
 

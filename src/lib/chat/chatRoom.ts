@@ -1,8 +1,8 @@
 import { MessageList } from "./messagelist";
-import { UserList } from "./userList";
+import { UserList } from "../user/userList";
 
 
-export class ChatRoom {
+class ChatRoom {
 
     private roomName: string;
     private userList: UserList;
@@ -28,3 +28,5 @@ export class ChatRoom {
         this.messageList = new MessageList();
     }
 }
+
+export { ChatRoom };

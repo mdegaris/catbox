@@ -1,4 +1,3 @@
-import { User } from "../lib/user";
 
 export class Config {
 
