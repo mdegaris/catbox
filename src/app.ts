@@ -10,6 +10,9 @@ import { Message } from './lib/chat/message';
 import { ChatRoom } from './lib/chat/chatRoom';
 import { User } from './lib/user/user';
 
+import {Registration} from './lib/register/registration';
+import {registerNewUser} from './lib/db/api/dbCalls';
+
 
 let SOCKET_USER_MAP = new Map();
 let IP_USER_MAP = new Map();
@@ -33,12 +36,34 @@ mainApp.get('/', (_req, res) => {
   res.sendFile(path.join(__dirname, 'public', '/main.html'));
 });
 
+
 // =================================================================
 
 // mainApp.use(cookieParse());
 // mainApp.use(sessionMiddleware);
 mainApp.use(logger);
 mainApp.use(express.static(path.join(__dirname, 'public', 'static')));
+mainApp.use(express.urlencoded({ extended: true }));
+mainApp.use(express.json()); 
+
+
+mainApp.get('/register', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', '/register.html'));
+});
+
+mainApp.post('/doRegister', (req, res) => {
+  console.log(req.body);
+  const email = req.body.email;
+  const pw = req.body.password;
+  const r = new Registration(email, pw);
+  // registerNewUser(r, () => {
+  //   res.sendFile(path.join(__dirname, 'public', '/register.html'));
+  // });
+
+  registerNewUser(r).then(() => {
+    res.sendFile(path.join(__dirname, 'public', '/register.html'));
+  });
+});
 
 // =================================================================
 
