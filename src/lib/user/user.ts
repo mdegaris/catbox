@@ -1,60 +1,72 @@
 import { Config } from '../../conf/config';
 import { MessageList } from '../chat/messagelist';
+import { UserProfile } from './userProfile';
 
 
 const NON_IP = 'xx.xx.xx.xx';
+const NON_PW = 'xxxxxxxxxxx';
 
-enum ReservedUsername {
-    UNDEFINED = '[Undefined]',
-    SYSTEM = '[System]',
-    TEST = '__testuser__'
+enum ReservedEmail {
+    SYSTEM = 'admin@catbox.degaris.uk',
+    TEST = 'test@catbox.degaris.uk'
 }
 
 class User {
 
     public static readonly SYSTEM_USER: User
-        = User.createSpecialUser(ReservedUsername.SYSTEM);
-
-    public static readonly UNDEFINED_USER: User
-        = User.createSpecialUser(ReservedUsername.UNDEFINED);
+        = User.createSpecialUser(ReservedEmail.SYSTEM, UserProfile.SYSTEM);
 
     public static readonly TEST_USER: User
-        = User.createSpecialUser(ReservedUsername.TEST);
+        = User.createSpecialUser(ReservedEmail.TEST, UserProfile.TEST);
 
-    static createSpecialUser(un: string): User {
-        return new User(un, NON_IP, new Date());
+    static createSpecialUser(em: string, up: UserProfile): User {
+        return new User(em, up, NON_PW, NON_IP, new Date());
     }
 
-    private username: string;
+    private email: string;
+    private passwordHash: string;
     private ipAddress: string;
-    private timeJoined: Date;
+    private loginTime: Date;
     private messageList: MessageList;
+    private userProfile: UserProfile;
 
 
     public equals(u: User) {
-        return (u.getUsername() === this.username);
+        return (u.getEmail() === this.email);
     }
 
-    public getUsername(): string {
-        return this.username;
+    public getEmail(): string {
+        return this.email;
     }
 
     public getIpAddress(): string {
         return this.ipAddress;
     }
 
-    public setTimeJoined(d: Date) {
-        this.timeJoined = d;
+    public getPasswordHash(): string {
+        return this.passwordHash;
     }
 
-    public getTimeJoined(): Date {
-        return this.timeJoined;
+    public setUserProfile(up: UserProfile) {
+        return this.userProfile = up;
+    }
+
+    public getUserProfile(): UserProfile {
+        return this.userProfile;
+    }
+
+    public getLoginTime(): Date {
+        return this.loginTime;
+    }
+
+    public setLoginTime(lt: Date) {
+        this.loginTime = lt;
     }
 
     public lastActivityTime(): Date {
         let msglLastAct = this.messageList.getLastMessageTime();
-        return (msglLastAct === null || this.timeJoined > msglLastAct) ?
-            this.timeJoined : msglLastAct;
+        return (msglLastAct === null || this.loginTime > msglLastAct) ?
+            this.loginTime : msglLastAct;
     }
 
 
@@ -69,20 +81,24 @@ class User {
     }
 
     public toString(): string {
+        const upStr = this.userProfile ? this.userProfile.toString() : String(this.userProfile);
         let json = {
-            username: this.username,
+            userProfile: upStr,
             ipAddress: this.ipAddress,
-            timeJoined: this.timeJoined.getTime().toString()
+            loginTime: this.loginTime.getTime().toString()
         };
 
         return JSON.stringify(json);
     }
 
-    constructor(un: string, ip: string, dt: Date) {
-        this.username = un;
+    constructor(em: string, up: UserProfile, pwh: string, ip: string, dt: Date) {
+        this.email = em;
+        this.passwordHash = pwh;
         this.ipAddress = ip;
-        this.timeJoined = dt;
+        this.loginTime = dt;
         this.messageList = new MessageList();
+
+        this.userProfile = up;
     }
 }
 

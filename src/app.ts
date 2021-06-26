@@ -1,72 +1,23 @@
-import express from 'express';
 import socketio from 'socket.io';
-import path from 'path';
-import session from 'express-session';
-import cookieParse from 'cookie-parser';
 
 import { Config } from './conf/config';
-import { mainApp, httpServer, socketServer } from './create-app-objs';
+import { catboxApp, httpServer, socketServer } from './create-app-objs';
 import { Message } from './lib/chat/message';
 import { ChatRoom } from './lib/chat/chatRoom';
 import { User } from './lib/user/user';
+import { UserProfile } from './lib/user/userProfile';
 
-import {Registration} from './lib/register/registration';
-import {registerNewUser} from './lib/db/api/dbCalls';
+import { setupRouter } from './router';
 
+
+// =================================================================
+
+setupRouter(catboxApp);
+
+// =================================================================
 
 let SOCKET_USER_MAP = new Map();
 let IP_USER_MAP = new Map();
-
-
-const sessionMiddleware = session({
-  secret: 'loki',
-  cookie: {maxAge: 120000},
-  resave: true,
-  saveUninitialized: true
-});
-
-const logger = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  console.log(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
-  next();
-}
-
-// =================================================================
-
-mainApp.get('/', (_req, res) => {
-  res.sendFile(path.join(__dirname, 'public', '/main.html'));
-});
-
-
-// =================================================================
-
-// mainApp.use(cookieParse());
-// mainApp.use(sessionMiddleware);
-mainApp.use(logger);
-mainApp.use(express.static(path.join(__dirname, 'public', 'static')));
-mainApp.use(express.urlencoded({ extended: true }));
-mainApp.use(express.json()); 
-
-
-mainApp.get('/register', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', '/register.html'));
-});
-
-mainApp.post('/doRegister', (req, res) => {
-  console.log(req.body);
-  const email = req.body.email;
-  const pw = req.body.password;
-  const r = new Registration(email, pw);
-  // registerNewUser(r, () => {
-  //   res.sendFile(path.join(__dirname, 'public', '/register.html'));
-  // });
-
-  registerNewUser(r).then(() => {
-    res.sendFile(path.join(__dirname, 'public', '/register.html'));
-  });
-});
-
-// =================================================================
-
 const defaultChatroom = new ChatRoom(Config.DEFAULT_CHATROOM_NAME);
 
 // =================================================================
@@ -91,10 +42,10 @@ function chatHandler(msg: string, socket: socketio.Socket) {
 // =================================================================
 
 function userJoinHandler(username: string, socket: socketio.Socket) {
-    
-  let newUser = new User(username, socket.handshake.address, new Date());
+
+  let newUser = new User(username, UserProfile.TEST, 'tespw', socket.handshake.address, new Date());
   defaultChatroom.getUserList().addUser(newUser);
-  
+
   SOCKET_USER_MAP.set(socket.id, newUser);
   IP_USER_MAP.set(newUser.getIpAddress(), newUser);
 
@@ -108,13 +59,13 @@ function userJoinHandler(username: string, socket: socketio.Socket) {
 // =================================================================
 
 function rejoin(user: User, socket: socketio.Socket) {
-  
-  user.setTimeJoined(new Date());
+
+  user.setLoginTime(new Date());
   SOCKET_USER_MAP.set(socket.id, user);
 
   console.log(`User rejoined: ${user.toString()}`);
-  
-  let joinedMsg = new Message(`${user.getUsername()} has rejoined the chat.`, new Date(), User.SYSTEM_USER);
+
+  let joinedMsg = new Message(`${user.getUserProfile().getUsername()} has rejoined the chat.`, new Date(), User.SYSTEM_USER);
   socketServer.emit('system-message', joinedMsg.getText());
 }
 

@@ -7,7 +7,7 @@ class Message {
     private user: User;
 
     public getText(): string {
-        return `${this.user.getUsername()} : ${this.text}`;
+        return `${this.user.getUserProfile().getUsername()} : ${this.text}`;
     }
 
     public getTimestamp(): Date {

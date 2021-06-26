@@ -30,14 +30,38 @@ USE `catbox`;
 DROP TABLE IF EXISTS `user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
+-- catbox.`user` definition
+
 CREATE TABLE `user` (
   `user_id` int unsigned NOT NULL AUTO_INCREMENT,
   `email` varchar(320) NOT NULL,
   `password_hash` varchar(72) NOT NULL,
+  `created_on` datetime NOT NULL,
+  `modified_on` datetime NOT NULL,
+  `role` int NOT NULL DEFAULT '1',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_UN` (`email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Registered users.';
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='Registered users.';
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+
+-- catbox.user_role definition
+
+DROP TABLE IF EXISTS `user_role`;
+
+CREATE TABLE `user_role` (
+  `user_role_id` int unsigned NOT NULL AUTO_INCREMENT,
+  `role_name` varchar(100) NOT NULL,
+  PRIMARY KEY (`user_role_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci COMMENT='User role';
+
+INSERT INTO catbox.user_role
+(user_role_id, role_name)
+VALUES(1, 'user');
+INSERT INTO catbox.user_role
+(user_role_id, role_name)
+VALUES(2, 'admin');
+
 
 --
 -- Dumping data for table `user`

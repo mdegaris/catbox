@@ -1,8 +1,8 @@
 import { ConnectionPool } from './connectionPool';
 
 
-async function transaction(sql: string, binds: Array<string | number> = Array()): Promise<Array<any>> {
-
+async function transaction(sql: string, binds?: any) : Promise<Array<any>> {
+    
     const conn = await ConnectionPool.getConnectionPromise();
 
     return new Promise<Array<any>>((resolve, reject) => {
@@ -10,6 +10,7 @@ async function transaction(sql: string, binds: Array<string | number> = Array())
             if (trError) {
                 reject(trError);
             } else {
+                
                 conn.execute(sql, binds, (exError, results) => {
                     if (exError) {
                         conn.rollback(() => {
@@ -17,9 +18,15 @@ async function transaction(sql: string, binds: Array<string | number> = Array())
                         });
                     } else {
                         const rows = Array.from(JSON.parse(JSON.stringify(results)));
-                        conn.commit((cmErr) => {                            
-                            ConnectionPool.end();
-                            resolve(rows);
+                        conn.commit((cmErr) => { 
+                            if (cmErr) {
+                                conn.rollback(() => {
+                                    reject(cmErr);
+                                });
+                            } else {
+                                conn.end();
+                                resolve(rows);
+                            }
                         });                                                
                     }
                 });

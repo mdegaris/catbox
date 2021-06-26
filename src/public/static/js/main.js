@@ -9,10 +9,10 @@ socket.emit('bootstrap');
 
 socket.on('load-chat', () => {
     console.log('Client load chat.');
-    loadChat('ajax-content', socket);
+    loadChat('page-content', socket);
 });
 
 socket.on('load-join', () => {
     console.log('Client load join.');
-    loadJoin('ajax-content', socket);
+    loadJoin('page-content', socket);
 });

@@ -11,16 +11,15 @@
     <link rel="alternate icon" href="/favicon.ico">
 
     <link href="https://fonts.gstatic.com" rel="preconnect">
-    <link href="https://fonts.googleapis.com/css2?family=Odibee+Sans&family=Roboto&family=Lexend+Zetta&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Odibee+Sans&family=Roboto&family=Lexend+Zetta&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="https://use.typekit.net/rsd0ewu.css">
     <link rel="stylesheet" href="/css/styles.css">
 
-    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-    <script src="/socket.io/socket.io.js"></script>
-    <script type="module" src="/js/main.js" defer></script>
+    <!-- <script src="/socket.io/socket.io.js"></script>
+    <script type="module" src="/js/main.js" defer></script> -->
+    <script src="/js/date.js" defer></script>
 
     <title>CatBox</title>
 </head>
@@ -32,7 +31,9 @@
                 <use href="#cat" />
             </svg>
         </header>
-        <section id="page-content" class="main-content"></section>
+        <section id="page-content" class="main-content">
+            <%- include(content); %>
+        </section>
         <footer class="fg-light4">Marc de Garis 2021</footer>
     </div>
 

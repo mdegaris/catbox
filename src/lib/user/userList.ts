@@ -27,9 +27,8 @@ class UserList {
         if (this.containsUser(u)) {
             this.userList =
                 this.userList.filter((u) => {
-                    return (u.getUsername() != u.getUsername());
+                    return (u.getUserProfile().getUsername() != u.getUserProfile().getUsername());
                 });
-
             return true;
         } else {
             return false;

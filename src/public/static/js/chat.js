@@ -82,7 +82,7 @@ function _addSocketListeners(socket) {
 
 
 async function _doLoad(containerId) {
-    
+
     const container = document.getElementById(containerId);
     const response = await fetch(`/content/${content}`);
     const contentHtml = await response.text();
@@ -91,7 +91,7 @@ async function _doLoad(containerId) {
 
 
 function _addListeners(socket) {
-    console.log('Add chat listeners...');    
+    console.log('Add chat listeners...');
     dom.sendForm().addEventListener('submit', e => sendHandler(e, socket));
     _addSocketListeners(socket);
 }
@@ -117,7 +117,6 @@ async function _loadContent(containerId, socket) {
 }
 
 export async function load(containerId, socket) {
-    console.log('Chat page loader.');  
+    console.log('Chat page loader.');
     await _loadContent(containerId, socket);
 }
-
