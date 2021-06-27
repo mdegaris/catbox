@@ -17,8 +17,6 @@ const  TEST_PASSWORDS : Record<string, string> =
                     TEST_PW5: 'l4QwbAu8ShCMYiOc'
                 };
 
-
-
 /**
  * Group 'password' tests.
  */
