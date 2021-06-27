@@ -1,7 +1,13 @@
+/** 
+ * Unit tests for password API.
+ */
+
 import { expect } from 'chai';
 import { hashPassword, hashCompare } from "../../../lib/auth/password";
 
-
+/**
+ * List of various test password strings.
+ */
 const  TEST_PASSWORDS : Record<string, string> =
                 {
                     TEST_PW1: 'password1234',
@@ -12,8 +18,15 @@ const  TEST_PASSWORDS : Record<string, string> =
                 };
 
 
+
+/**
+ * Group 'password' tests.
+ */
 describe('password', () => {
 
+    /**
+     * Test that hashing plain passwords yields a string.
+     */
     describe('hashPassword', () => {
         it('Must return a string.', async () => {
             for (let key in TEST_PASSWORDS) {
@@ -24,6 +37,10 @@ describe('password', () => {
         })
     });
 
+    /**
+     * Test that hashing plain passwords using argon2id,
+     * yields a 96 byte string.
+     */
     describe('hashPassword', () => {
         it('Hash is 96 bytes in length.', async () => {
             for (let key in TEST_PASSWORDS) {
@@ -34,6 +51,9 @@ describe('password', () => {
         })
     });
 
+    /**
+     * Compare a plain password with it's hashed version, and check they equate to 'true'.
+     */
     describe('hashCompare', () => {
         it('Hashes must match with identical plain passwords.', async () => {
             for (let key in TEST_PASSWORDS) {
@@ -45,6 +65,9 @@ describe('password', () => {
         })
     });
 
+        /**
+     * Compare a plain password with different hashed password, and check they equate to 'false'.
+     */
     describe('hashCompare', () => {
         it('Hashes must NOT match with different plain passwords.', async () => {
             let hash = await hashPassword(TEST_PASSWORDS.TEST_PW1);
