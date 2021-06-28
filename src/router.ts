@@ -1,4 +1,4 @@
-import express, { Express } from 'express';
+import express, { Express, Request, Response } from 'express';
 import path from 'path';
 import session from 'express-session';
 import { Registration } from './lib/forms/registration';
@@ -27,6 +27,20 @@ function staticContent(app: Express) {
     app.use(express.static(path.join(__dirname, 'public', 'static')));
 }
 
+function registerPost(req: Request, res: Response) {
+
+    const reg = Registration.buildFromHttpRequest(req);
+    console.log(`New Registration: ${reg.toString()}`);
+
+    reg.create()
+        .then(() => {
+            console.log('Registration success.');
+            res.sendFile(path.join(__dirname, 'public', '/main.html'));
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
 
 function addRoutes(app: Express) {
 
@@ -41,20 +55,7 @@ function addRoutes(app: Express) {
             // res.render('register', {message: 'test message'});
             res.render('main-template', {content: 'register-content'});
         })
-        .post((req, res) => {
-
-            const reg = Registration.buildFromHttpRequest(req);
-            console.log(`New Registration: ${reg.toString()}`);
-
-            reg.create()
-                .then(() => {
-                    console.log('Registration success.');
-                    res.sendFile(path.join(__dirname, 'public', '/main.html'));
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-        });
+        .post(registerPost(req, res));
 
 
     app.route('/login')
