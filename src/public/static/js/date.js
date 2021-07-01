@@ -122,10 +122,21 @@ function yearHandler(e, dayElement, monthElement) {
     }
 }
 
+// function changeHandler(e) {
+//     if (/\d/.test(e.key)) {
+//         e.stopPropagation();
+//         e.preventDefault();
+//     }
+// }
+
 function addDateListeners() {
     const dobDay = document.getElementById('dob-day');
     const dobMonth = document.getElementById('dob-month');
     const dobYear = document.getElementById('dob-year');
+
+    // dobDay.addEventListener('keydown', e => changeHandler(e));
+    // dobMonth.addEventListener('keydown', e => changeHandler(e));
+    // dobYear.addEventListener('keydown', e => changeHandler(e));
 
     dobDay.addEventListener('focusout', e => dayHandler(e, dobMonth, dobYear));
     dobMonth.addEventListener('focusout', e => monthHandler(e, dobDay, dobYear));

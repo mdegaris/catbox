@@ -49,19 +49,22 @@ function addRoutes(app: Express) {
     });
 
 
+    /**
+     * Registration route.
+     */
     app.route('/register')
         .get((_req, res) => {
-            // res.sendFile(path.join(__dirname, 'public', '/register.html'));
-            // res.render('register', {message: 'test message'});
-            res.render('main-template', {content: 'register-content'});
+            res.render('main-template', { content: 'register-content' });
         })
-        .post(registerPost(req, res));
+        .post((req, res) => {
+            registerPost(req, res);
+        });
 
 
     app.route('/login')
         .get((_req, res) => {
             // res.sendFile(path.join(__dirname, 'public', '/login.html'));
-            res.render('main-template', {content: 'login-content'});
+            res.render('main-template', { content: 'login-content' });
         })
     // .post((req, res, next) => {
 

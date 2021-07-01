@@ -1,6 +1,6 @@
 import { Request } from 'express';
 import { sqlStatements } from '../db/sql/statements';
-import { transaction } from '../db/connect/db';
+import { transaction, TransactionType } from '../db/transaction';
 import { hashCompare } from './password';
 
 
@@ -26,7 +26,7 @@ async function authenticate(req: Request): Promise<AuthStatus> {
             const loginEmail = req.body[loginFormParams.email];
             const loginPW = req.body[loginFormParams.password];
 
-            const userResults = await transaction(sqlStatements.PW_FROM_EMAIL, loginEmail);
+            const userResults = await transaction(TransactionType.QUERY, sqlStatements.PW_FROM_EMAIL, loginEmail);
 
             if (userResults.length == 1) {
                 const userAcc = userResults[0];

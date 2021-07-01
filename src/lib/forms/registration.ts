@@ -1,13 +1,35 @@
 import { Request } from 'express';
 import { sqlStatements } from '../db/sql/statements';
-import { transaction } from '../db/connect/db';
-import { hashPassword } from '../auth/password';
+import { transaction, TransactionType } from '../db/transaction';
+import { hashPassword, validPassword } from '../auth/password';
+
+
 
 class Registration {
 
+    private static readonly FORM_PARAMS: Record<string, string> = {
+        email: 'email',
+        password: 'passowrd',
+        birthdateDay: 'dobDay',
+        birthdateMonth: 'dobMonth',
+        birthdateYear: 'dobYear',
+        gender: 'gender'
+    }
+
     // Static
 
-    private static readonly PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+    private static parseRequestBody(req: Request): any {
+
+        let paramMap = new Map<string, string>();
+        for (let pn in Registration.FORM_PARAMS) {
+            if (pn in req.body) {
+                paramMap.set(pn, req.body[pn]);
+            } else {
+
+            }
+        }
+    }
+
 
     public static buildFromHttpRequest(request: Request): Registration {
         const newReg = new Registration(request.body.email, request.body.password);
@@ -15,13 +37,17 @@ class Registration {
     }
 
     public static validatePassword(pw: string): boolean {
-        return Registration.PASSWORD_REGEX.test(pw);
+        return validPassword(pw);
     }
 
     // Instanced
 
     private email: string;
+    private hashPassword?: string;
     private plainPassword: string;
+    private dobDay?: number;
+    private dobMonth?: number;
+    private dobYear?: number;
 
     private emailAlreadyExists(): Promise<boolean> {
         console.log('Check for duplicate email.');
@@ -71,7 +97,7 @@ class Registration {
                     console.log('Valid registration.');
 
                     const bindVars = [this.email, hashedPassword];
-                    const newUserTrans = transaction(sqlStatements.REGISTER_NEW_USER, bindVars);
+                    const newUserTrans = transaction(TransactionType.QUERY, sqlStatements.REGISTER_NEW_USER, bindVars);
                     resolve(newUserTrans);
                 }
             });

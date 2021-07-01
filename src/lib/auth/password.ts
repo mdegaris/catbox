@@ -1,6 +1,8 @@
 import argon2, { argon2id } from 'argon2';
 
 
+const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
+
 /**
  * Hash a give plain password string.
  *
@@ -8,7 +10,7 @@ import argon2, { argon2id } from 'argon2';
  * @returns Hashed password string
  */
 async function hashPassword(pw: string): Promise<string> {
-    return await argon2.hash(pw, {type: argon2id});
+    return await argon2.hash(pw, { type: argon2id });
 }
 
 /**
@@ -18,9 +20,13 @@ async function hashPassword(pw: string): Promise<string> {
  * @returns true/false
  */
 async function hashCompare(plainPassword: string, hashedPassword: string): Promise<boolean> {
-    return await argon2.verify(hashedPassword, plainPassword, {type: argon2id});
-
-    argon2.verify
+    return await argon2.verify(hashedPassword, plainPassword, { type: argon2id });
 }
 
-export {hashPassword, hashCompare};
+
+function validPassword(pw: string): boolean {
+    return PASSWORD_REGEX.test(pw);
+}
+
+
+export { hashPassword, hashCompare, validPassword };

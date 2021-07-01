@@ -1,34 +1,64 @@
-<div class="base-container container-med-w bg-light3 border-rnd-full">
-    <form method="POST" class="flex-col-container gap-med">
-        <div class="seperator label">
-            <hr>
-            <div>account login</div>
-            <hr>
+<div class="base-container container-med-w bg-clr3 border-rnd-full shadow">
+    <form method="POST">
+        <div id="validation-errors">
         </div>
-        <div class="flex-resp-container gap-thin full-w">
-            <input class="border-resp-left full-w bg-light2 center" name="email" type="text" autocomplete="off" placeholder="email" />
-            <input class="border-resp-right full-w bg-light2 center" name="password" type="password" autocomplete="off" placeholder="password" />
-        </div>
-        <div class="seperator label">
-            <hr>
-            <div>date of birth</div>
-            <hr>
-        </div>
-        <div class="flex-row-container gap-thin full-w">
-            <input id="dob-day" class="border-rnd-left full-w bg-light2 center" name="day" type="number" autocomplete="off" placeholder="day" />
-
-            <input id="dob-month" class="full-w bg-light2 center" name="month" type="number" autocomplete="off" placeholder="month" />
-
-            <input id="dob-year" class=" border-rnd-right full-w bg-light2 center" name="year" type="number" autocomplete="off" placeholder="year" />
-        </div>
-        <div class="flex-col-container gap-thin full-w">
-            <button class="border-rnd-full full-w bg-light4 fg-light1">REGISTER</button>
-            <div class="seperator">
+        <div id="fields-container" class="flex-col-container gap-med bottom-spacer">
+            <div class="seperator grey">
                 <hr>
-                <div>or</div>
+                <div>account login</div>
                 <hr>
             </div>
-            <button class="border-rnd-full full-w bg-light4 fg-light1">LOGIN</button>
+            <div class="flex-resp-container gap-thin full-w">
+                <input class="border-resp-left full-w bg-clr2 center input-height" name="email" type="text" autocomplete="off" placeholder="email" />
+                <input class="border-resp-right full-w bg-clr2 center input-height" name="password" type="password" autocomplete="off" placeholder="password" />
+            </div>
+            <div class="seperator grey">
+                <hr>
+                <div>date of birth</div>
+                <hr>
+            </div>
+            <div class="flex-row-container gap-thin full-w">
+                <input id="dob-day" class="border-rnd-left full-w bg-clr2 center input-height" size="2" maxlength="2" name="day" type="text" autocomplete="off" placeholder="day">
+
+                <input id="dob-month" class="full-w bg-clr2 center input-height" name="month" size="2" maxlength="2" type="text" autocomplete="off" placeholder="month">
+
+                <input id="dob-year" class="border-rnd-right full-w bg-clr2 center input-height" size="4" maxlength="4" name="year" type="text" autocomplete="off" placeholder="year">
+            </div>
+            <div class="seperator grey">
+                <hr>
+                <div>gender</div>
+                <hr>
+            </div>
+            <div class="flex-row-container gap-thin full-w">
+                <input id="gender-male" name="gender" value="male" type="radio">
+                <label for="gender-male" class="border-rnd-left input-height">male</label>
+                <input id="gender-female" name="gender" value="female" type="radio">
+                <label for="gender-female" class="input-height">female</label>
+                <input id="gender-nonbinary" name="gender" value="nonbinary" type="radio">
+                <label for="gender-nonbinary" class="border-rnd-right input-height">non-binary</label>
+            </div>
+            <div class="seperator grey">
+                <hr>
+                <div>username</div>
+                <hr>
+            </div>
+            <div class="flex-row-container gap-thin full-w">
+                <input id="username" class="border-rnd-full full-w bg-clr2 center input-height" name="username" type="text" autocomplete="off">
+            </div>
+        </div>
+        <div class="seperator red bottom-spacer top-spacer">
+            <hr>
+        </div>
+        <div id="button-container">
+            <div class="flex-col-container gap-thin full-w">
+                <button class="border-rnd-full full-w bg-clr4 fg-clr1">REGISTER</button>
+                <div class="seperator red">
+                    <hr>
+                    <div>or</div>
+                    <hr>
+                </div>
+                <button class="border-rnd-full full-w bg-clr4 fg-clr1">LOGIN</button>
+            </div>
         </div>
     </form>
 </div>
