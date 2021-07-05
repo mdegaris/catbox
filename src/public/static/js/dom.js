@@ -1,56 +1,50 @@
-class Dom {
-    constructor() {
+/**************************************** */
+/* Add required DOM HTML ids to the ELEMENT_IDS mapping. */
+/**************************************** */
 
-        const _elements = ['send-input', 'join-input', 'send-form', 'join-form', 'message-list'];
-
-        this._cache = {};        
-
-        this._domGet = (id) => {
-            if (!(id in this._cache) || !this._cache[id]) {
-                console.log(`Added '#${id}' to dom cache.`);
-                this._cache[id] = document.getElementById(id);
-            }
-            return this._cache[id];
-        }
-
-        this.camelCase = (eid) => {
-            const i = eid.indexOf("-");
-            const first = eid.substr(0, i).toLowerCase();
-            const second = eid.charAt(i+1).toUpperCase() + eid.slice(i+2).toLowerCase();
-            return first + second;
-        }
-
-        for (let e of _elements) {
-            eval(`this.${this.camelCase(e)} = () => this._domGet('${e}')`);
-        }
-    }
+/**
+ * Mapping of available HTML element IDs.
+ */
+const ELEMENT_IDS = {
+    sendInput: 'send-input',
+    joinInput: 'join-input',
+    sendForm: 'send-form',
+    registerForm: 'register-form',
+    messageList: 'message-list',
+    emailInput: 'email-input',
+    emailError: 'email-error',
+    passwordInput: 'password-input',
+    passwordError: 'password-error'
 }
 
 
-// const dom = {
+const DOM = {
 
-//     _cache: {},
+    /**
+     * A cache of HTML element ids to Element object.
+     */
+    _cache: {},
 
-//     _elements: ['send-input', 'join-input', 'send-form', 'join-form', 'message-list'],
+    /**
+     * Reference the HTML Element IDS constant list.
+     */
+    ids: ELEMENT_IDS,
 
-//     _domGet: (id) => {
-//         if (!(id in this._cache) || !this._cache[id]) {
-//             this._cache[id] = document.getElementById(id);
-//         }
-//         return this._cache[id];
-//     },
+    /**
+     *  Retrives the HTML Element object for the give ID.
+     *  If Element object is retrieved from cache if it exists,
+     *  otherwise it's queried from the dom and placed in the cache.
+     *
+     * @param {string} id HTML element id
+     * @returns {Element} HTML element object
+     */
+    getElement: function(id) {
+        if (!(id in this._cache) || !this._cache[id]) {
+            console.log(`Added '#${id}' to dom cache.`);
+            this._cache[id] = document.getElementById(id);
+        }
+        return this._cache[id];
+    }
+}
 
-//     elements: () => {
-
-//         for (let e of dom._elements) {
-//             dom._cache[e] = dom._domGet(e);
-//         }
-        
-//         return dom._cache;
-//     }
-// }
-
-
-const dom = new Dom();
-
-export default dom;
+export default DOM;

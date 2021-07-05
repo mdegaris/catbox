@@ -1,5 +1,5 @@
 <div class="base-container container-med-w bg-clr3 border-rnd-full shadow">
-    <form method="POST">
+    <form id="register-form" method="POST">
         <div id="validation-errors">
         </div>
         <div id="fields-container" class="flex-col-container gap-med bottom-spacer">
@@ -8,45 +8,52 @@
                 <div>account login</div>
                 <hr>
             </div>
-            <div class="flex-resp-container gap-thin full-w">
-                <input class="border-resp-left full-w bg-clr2 center input-height" name="email" type="text" autocomplete="off" placeholder="email" />
-                <input class="border-resp-right full-w bg-clr2 center input-height" name="password" type="password" autocomplete="off" placeholder="password" />
+            <div class="flex-resp-container gap-resp full-w bottom-spacer">
+                <div class="flex-col-container full-w ">
+                    <input id="email-input" class="border-resp-left full-w bg-clr2 center input-height" name="email" type="text" autocomplete="off" placeholder="email" spellcheck="false" />
+                    <div id="email-error" class="red validation-error full-w"></div>
+                </div>
+                <div class="flex-col-container full-w">
+                    <input id="password-input" class="border-resp-right full-w bg-clr2 center input-height" name="password" type="password" autocomplete="new-password" placeholder="password" />
+                    <div id="password-error" class="red validation-error full-w"></div>
+                </div>
+
             </div>
             <div class="seperator grey">
                 <hr>
                 <div>date of birth</div>
                 <hr>
             </div>
-            <div class="flex-row-container gap-thin full-w">
+            <div class="flex-row-container gap-thin full-w bottom-spacer">
                 <input id="dob-day" class="border-rnd-left full-w bg-clr2 center input-height" size="2" maxlength="2" name="day" type="text" autocomplete="off" placeholder="day">
 
                 <input id="dob-month" class="full-w bg-clr2 center input-height" name="month" size="2" maxlength="2" type="text" autocomplete="off" placeholder="month">
 
                 <input id="dob-year" class="border-rnd-right full-w bg-clr2 center input-height" size="4" maxlength="4" name="year" type="text" autocomplete="off" placeholder="year">
             </div>
-            <div class="seperator grey">
+            <!-- <div class="seperator grey">
                 <hr>
                 <div>gender</div>
                 <hr>
-            </div>
-            <div class="flex-row-container gap-thin full-w">
+            </div> -->
+            <!-- <div class="flex-row-container gap-thin full-w">
                 <input id="gender-male" name="gender" value="male" type="radio">
                 <label for="gender-male" class="border-rnd-left input-height">male</label>
                 <input id="gender-female" name="gender" value="female" type="radio">
                 <label for="gender-female" class="input-height">female</label>
                 <input id="gender-nonbinary" name="gender" value="nonbinary" type="radio">
                 <label for="gender-nonbinary" class="border-rnd-right input-height">non-binary</label>
-            </div>
-            <div class="seperator grey">
+            </div> -->
+            <!-- <div class="seperator grey">
                 <hr>
                 <div>username</div>
                 <hr>
             </div>
             <div class="flex-row-container gap-thin full-w">
-                <input id="username" class="border-rnd-full full-w bg-clr2 center input-height" name="username" type="text" autocomplete="off">
-            </div>
+                <input id="username" class="border-rnd-full full-w bg-clr2 center input-height" name="username" type="text" autocomplete="off" spellcheck="false">
+            </div> -->
         </div>
-        <div class="seperator red bottom-spacer top-spacer">
+        <div class="seperator red">
             <hr>
         </div>
         <div id="button-container">

@@ -19,6 +19,8 @@ const ABS_MONTH_MIN = 1;
 const ABS_MONTH_MAX = 12;
 
 
+function padStr(v) { return String(v).padStart(2, '0'); }
+
 function getValue(element) {
     return (element.value.trim() == '') ? '' : parseInt(element.value);
 }
@@ -33,9 +35,7 @@ function calcFebDays(y) {
     return febDays;
 }
 
-function padStr(v) { return String(v).padStart(2, '0'); }
-
-function fixDay(dv, mv, yv) {
+async function fixDay(dv, mv, yv) {
 
     let dayMax = DAYS_IN_MONTH[mv];
     if (mv == FEB_MONTH) {
@@ -54,7 +54,7 @@ function fixDay(dv, mv, yv) {
     return correctedDay;
 }
 
-function fixMonth(mv) {
+async function fixMonth(mv) {
 
     let correctedMonth = padStr(mv);
     if (mv < ABS_MONTH_MIN) {
@@ -66,7 +66,7 @@ function fixMonth(mv) {
     return correctedMonth;
 }
 
-function fixYear(yv) {
+async function fixYear(yv) {
 
     let currentYear = new Date().getFullYear();
     let correctedYear = String(yv);
@@ -79,7 +79,7 @@ function fixYear(yv) {
     return correctedYear;
 }
 
-function dayHandler(e, monthElement, yearElement) {
+async function dayHandler(e, monthElement, yearElement) {
 
     let dayVal = getValue(e.target);
     if (dayVal == '') {
@@ -87,56 +87,45 @@ function dayHandler(e, monthElement, yearElement) {
     } else {
         let monthVal = getValue(monthElement);
         let yearVal = getValue(yearElement);
-        e.target.value = fixDay(dayVal, monthVal, yearVal);
+        e.target.value = await fixDay(dayVal, monthVal, yearVal);
     }
 }
 
-function monthHandler(e, dayElement, yearElement) {
+async function monthHandler(e, dayElement, yearElement) {
     let monthVal = getValue(e.target);
     if (monthVal == '') {
         e.target.value = monthVal;
     } else {
         let dayVal = getValue(dayElement);
         let yearVal = getValue(yearElement);
-        e.target.value = fixMonth(monthVal);
+        e.target.value = await fixMonth(monthVal);
 
         if ((monthVal == FEB_MONTH && yearVal > 0) ||
             (monthVal != FEB_MONTH && monthVal > 0)) {
-            dayElement.value = fixDay(dayVal, monthVal, yearVal);
+            dayElement.value = await fixDay(dayVal, monthVal, yearVal);
         }
     }
 }
 
-function yearHandler(e, dayElement, monthElement) {
+async function yearHandler(e, dayElement, monthElement) {
     let yearVal = getValue(e.target);
     if (yearVal == '') {
         e.target.value = yearVal;
     } else {
-        e.target.value = fixYear(yearVal);
+        e.target.value = await fixYear(yearVal);
 
         let monthVal = getValue(monthElement);
         if (monthVal == FEB_MONTH) {
             let dayVal = getValue(dayElement);
-            dayElement.value = fixDay(dayVal, monthVal, yearVal);
+            dayElement.value = await fixDay(dayVal, monthVal, yearVal);
         }
     }
 }
-
-// function changeHandler(e) {
-//     if (/\d/.test(e.key)) {
-//         e.stopPropagation();
-//         e.preventDefault();
-//     }
-// }
 
 function addDateListeners() {
     const dobDay = document.getElementById('dob-day');
     const dobMonth = document.getElementById('dob-month');
     const dobYear = document.getElementById('dob-year');
-
-    // dobDay.addEventListener('keydown', e => changeHandler(e));
-    // dobMonth.addEventListener('keydown', e => changeHandler(e));
-    // dobYear.addEventListener('keydown', e => changeHandler(e));
 
     dobDay.addEventListener('focusout', e => dayHandler(e, dobMonth, dobYear));
     dobMonth.addEventListener('focusout', e => monthHandler(e, dobDay, dobYear));

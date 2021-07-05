@@ -17,7 +17,11 @@ function massageResults(r: RowDataPacket[]) {
 
 // ============================================================
 
-async function _query(conn: PoolConnection, sql: string, binds?: any | any[]): Promise<Array<any>> {
+async function _query(
+    conn: PoolConnection,
+    sql: string,
+    binds?: any | any[]): Promise<Array<any>> {
+
     let results: RowDataPacket[];
     let _fields: FieldPacket[];
     [results, _fields] = await conn.query(sql, binds);
@@ -27,7 +31,11 @@ async function _query(conn: PoolConnection, sql: string, binds?: any | any[]): P
 
 // ============================================================
 
-async function _execute(conn: PoolConnection, sql: string, binds?: any | any[]) {
+async function _execute(
+    conn: PoolConnection,
+    sql: string,
+    binds?: any | any[]) {
+
     let results: RowDataPacket[];
     let _fields: FieldPacket[];
     [results, _fields] = await conn.execute(sql, binds);
@@ -38,7 +46,10 @@ async function _execute(conn: PoolConnection, sql: string, binds?: any | any[]) 
 
 // ============================================================
 
-async function transaction(tType: TransactionType, sql: string, binds?: any): Promise<any> {
+async function transaction(
+    tType: TransactionType,
+    sql: string,
+    binds?: any): Promise<Array<any>> {
 
     const conn = await ConnectionPool.getConnection();
 
@@ -57,6 +68,7 @@ async function transaction(tType: TransactionType, sql: string, binds?: any): Pr
                 throw Error('Unknown TransactionType.');
         }
 
+        // return Array.from(rows);
         return rows;
 
     } catch (err) {
@@ -92,6 +104,6 @@ async function test() {
     ConnectionPool.end();
 }
 
-test();
+// test();
 
 // ============================================================

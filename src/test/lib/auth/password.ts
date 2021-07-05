@@ -1,4 +1,4 @@
-/** 
+/**
  * Unit tests for password API.
  */
 
@@ -8,14 +8,14 @@ import { hashPassword, hashCompare } from "../../../lib/auth/password";
 /**
  * List of various test password strings.
  */
-const  TEST_PASSWORDS : Record<string, string> =
-                {
-                    TEST_PW1: 'password1234',
-                    TEST_PW2: 'password4321',
-                    TEST_PW4: 'nd{u{R:D6W|<(DI#',
-                    TEST_PW3: '3f0LTH8o',
-                    TEST_PW5: 'l4QwbAu8ShCMYiOc'
-                };
+const TEST_PASSWORDS: Record<string, string> =
+{
+    TEST_PW1: 'Password1234',
+    TEST_PW2: 'password4321',
+    TEST_PW4: 'nd{u{R:D6W|<(DI#',
+    TEST_PW3: '3f0LTH8o',
+    TEST_PW5: 'l4QwbAu8ShCMYiOc'
+};
 
 /**
  * Group 'password' tests.
@@ -63,9 +63,9 @@ describe('password', () => {
         })
     });
 
-        /**
-     * Compare a plain password with different hashed password, and check they equate to 'false'.
-     */
+    /**
+ * Compare a plain password with different hashed password, and check they equate to 'false'.
+ */
     describe('hashCompare', () => {
         it('Hashes must NOT match with different plain passwords.', async () => {
             let hash = await hashPassword(TEST_PASSWORDS.TEST_PW1);

@@ -1,7 +1,8 @@
-import express, { Express, Request, Response } from 'express';
+import express, { Express, request, Request, Response } from 'express';
 import path from 'path';
 import session from 'express-session';
 import { Registration } from './lib/forms/registration';
+import { liteValidation } from './lib/forms/regValidator';
 import { AuthStatus, authenticate } from './lib/auth/login';
 // import cookieParse from 'cookie-parser';
 
@@ -13,14 +14,17 @@ const sessionMiddleware = session({
 });
 
 const logger = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    console.log(`${req.protocol}://${req.get('host')}${req.originalUrl}`);
+    console.log(`${req.protocol}://${req.hostname}${req.originalUrl}`);
+    console.log(`Req method: ${req.method}`);
+    console.log(`Req Content-Type:  ${req.get('Content-Type')}`);
+    console.log(`Resp Content-Type:  ${res.get('Content-Type')}`);
     next();
 }
 
 function addMiddleware(app: Express) {
-    app.use(logger);
     app.use(express.urlencoded({ extended: true }));
     app.use(express.json());
+    app.use(logger);
 }
 
 function staticContent(app: Express) {
@@ -60,6 +64,11 @@ function addRoutes(app: Express) {
             registerPost(req, res);
         });
 
+    app.post('/validate-reg-form', (req, res) => {
+        liteValidation(req).then((v) => {
+            res.json(v.getErrorsJSON());
+        });
+    });
 
     app.route('/login')
         .get((_req, res) => {

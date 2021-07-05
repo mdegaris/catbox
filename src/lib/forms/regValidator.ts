@@ -1,95 +1,105 @@
-import { validate_async } from 'email-validator';
+import validator from 'validator';
 import { Request } from 'express';
+import { ParamNames, RegForm } from './formParamNames';
 import { transaction, TransactionType } from '../db/transaction';
 import { sqlStatements } from '../db/sql/statements';
 
 
+enum ValidationType {
+    FULL,
+    LITE
+}
+
 class RegValidator {
-
-    private static readonly FORM_PARAMS = {
-        email: 'email',
-        password: 'passowrd',
-        birthdateDay: 'dobDay',
-        birthdateMonth: 'dobMonth',
-        birthdateYear: 'dobYear',
-        gender: 'gender'
-    }
-
-    private request: Request;
-    private paramsMap: Map<string, string>;
-
 
     private async _emailAlreadyExists(): Promise<boolean> {
         console.log('Check for duplicate email.');
 
-        const userId = await transaction(TransactionType.QUERY, sqlStatements.USER_FROM_EMAIL, this.paramsMap.get(RegValidator.FORM_PARAMS.email));
+        const email = this.form.getValue(ParamNames.email);
+        const foundUsers = await transaction(TransactionType.QUERY,
+            sqlStatements.USER_FROM_EMAIL,
+            email);
+
+        const foundUsersLen = foundUsers.length;
+        if (foundUsersLen == 1) {
+            return Promise.resolve(true);
+        } else if (foundUsersLen > 1) {
+            throw Error(`Unexpected number of users found for ${email} (${foundUsersLen})`);
+        }
 
         return Promise.resolve(false);
     }
 
-    private async _emailValidator(email: string): Promise<boolean> {
+
+    private async _emailValid(email: string): Promise<boolean> {
 
         return new Promise<boolean>((resolve, reject) => {
-            validate_async(email, (err, valid) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(valid);
-                }
-            });
+            const isValid = validator.isEmail(email);
+            resolve(isValid);
         });
     }
 
+    private async _validateEmail(vt: ValidationType) {
 
-    public validateEmail() {
-
-        const emailPname = RegValidator.FORM_PARAMS.email;
-        if (this.paramsMap.has(emailPname)) {
-            let email = this.paramsMap.get(emailPname);
-            if (email === undefined) {
-
+        const email = this.form.getValue(ParamNames.email);
+        if (validator.isEmpty(email, { ignore_whitespace: true })) {
+            if (vt == ValidationType.FULL) {
+                this.form.setError(ParamNames.email, 'enter an email');
+            }
+        } else {
+            const isValid = await this._emailValid(email);
+            if (!isValid) {
+                this.form.setError(ParamNames.email, 'invalid email');
             } else {
-                this._emailValidator(email)
-                    .then((isValid) => {
-
-                    })
-                    .catch(err => {
-
-                    });
-            }
-        }
-
-
-
-    }
-
-    private validatePassword() {
-
-    }
-
-    private validateBirthdate() {
-
-    }
-
-    private validateGender() {
-
-    }
-
-    private validateUsername() {
-
-    }
-
-    private parseRequestBody(req: Request) {
-
-        for (let pname in RegValidator.FORM_PARAMS) {
-            if (pname in req.body) {
-                this.paramsMap.set(pname, req.body.pname);
+                const emailExists = await this._emailAlreadyExists();
+                if (emailExists) {
+                    this.form.setError(ParamNames.email, 'email already registered');
+                }
             }
         }
     }
 
-    constructor(req: Request) {
-        this.request = req;
-        this.paramsMap = new Map<string, string>();
+    private async _validatePassword() {
+        const pw = this.form.getValue(ParamNames.password);
+        const pwValid = validator.isStrongPassword(pw, {
+            minLength: 8,
+            minLowercase: 1,
+            minUppercase: 1,
+            minNumbers: 1,
+            minSymbols: 0,
+        });
+
+        if (!pwValid) {
+            this.form.setError(ParamNames.password,
+                'must be a min of 8 character, with at least 1 uppercase, 1 lowercase, and 1 number');
+        }
     }
+
+    public getForm(): RegForm {
+        return this.form;
+    }
+
+    public getErrorsJSON(): JSON {
+        return this.form.getErrorsJSON();
+    }
+
+    public async validateFields(vt: ValidationType) {
+        await this._validateEmail(vt);
+        await this._validatePassword();
+    }
+
+    constructor(private form: RegForm) { };
 }
+
+async function liteValidation(req: Request) {
+
+
+    const rf: RegForm = new RegForm(req);
+    const validator = new RegValidator(rf);
+
+    await validator.validateFields(ValidationType.LITE);
+    return validator;
+}
+
+
+export { liteValidation }
