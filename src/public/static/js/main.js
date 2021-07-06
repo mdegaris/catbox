@@ -1,6 +1,5 @@
-
-import {load as loadChat} from './chat.js';
-import {load as loadJoin} from './join.js';
+import { load as loadChat } from './chat.js';
+import { load as loadJoin } from './join.js';
 
 const socket = io();
 

@@ -1,12 +1,11 @@
-import { ConnectionPool, PoolConnection } from './connectionPool';
-import { RowDataPacket, FieldPacket } from 'mysql2';
-
+import { ConnectionPool, PoolConnection } from "./connectionPool";
+import { RowDataPacket, FieldPacket } from "mysql2";
 
 // ============================================================
 
 enum TransactionType {
     QUERY,
-    EXECUTE
+    EXECUTE,
 }
 
 // ============================================================
@@ -20,8 +19,8 @@ function massageResults(r: RowDataPacket[]) {
 async function _query(
     conn: PoolConnection,
     sql: string,
-    binds?: any | any[]): Promise<Array<any>> {
-
+    binds?: any | any[]
+): Promise<Array<any>> {
     let results: RowDataPacket[];
     let _fields: FieldPacket[];
     [results, _fields] = await conn.query(sql, binds);
@@ -34,8 +33,8 @@ async function _query(
 async function _execute(
     conn: PoolConnection,
     sql: string,
-    binds?: any | any[]) {
-
+    binds?: any | any[]
+) {
     let results: RowDataPacket[];
     let _fields: FieldPacket[];
     [results, _fields] = await conn.execute(sql, binds);
@@ -49,8 +48,8 @@ async function _execute(
 async function transaction(
     tType: TransactionType,
     sql: string,
-    binds?: any): Promise<Array<any>> {
-
+    binds?: any
+): Promise<Array<any>> {
     const conn = await ConnectionPool.getConnection();
 
     try {
@@ -65,12 +64,11 @@ async function transaction(
                 rows = await _execute(conn, sql, binds);
                 break;
             default:
-                throw Error('Unknown TransactionType.');
+                throw Error("Unknown TransactionType.");
         }
 
         // return Array.from(rows);
         return rows;
-
     } catch (err) {
         conn.rollback();
         console.log(err);
@@ -89,12 +87,20 @@ export { TransactionType, transaction };
 // Tests
 
 async function dbTestQuery1() {
-    const r = await transaction(TransactionType.QUERY, 'SELECT * FROM catbox._test WHERE test_id >= ?', [1]);
+    const r = await transaction(
+        TransactionType.QUERY,
+        "SELECT * FROM catbox._test WHERE test_id >= ?",
+        [1]
+    );
     console.log("name: " + r[0].name);
 }
 
 async function dbTestQuery2() {
-    const r = await transaction(TransactionType.EXECUTE, 'SELECT * FROM catbox._test WHERE test_id >= ?', [2]);
+    const r = await transaction(
+        TransactionType.EXECUTE,
+        "SELECT * FROM catbox._test WHERE test_id >= ?",
+        [2]
+    );
     console.log("name: " + r[0].name);
 }
 

@@ -1,8 +1,6 @@
-import { createPool, PoolConnection, Pool } from 'mysql2/promise';
-
+import { createPool, PoolConnection, Pool } from "mysql2/promise";
 
 class ConnectionPool {
-
     // Static
     private static connPoolSingleton: ConnectionPool | undefined;
 
@@ -32,11 +30,9 @@ class ConnectionPool {
     // Instance
     private _pool: Pool;
 
-
     private _getPool(): Pool {
         return this._pool;
     }
-
 
     private async _getConnection(): Promise<PoolConnection> {
         return await this._pool.getConnection();
@@ -50,30 +46,30 @@ class ConnectionPool {
 
     private constructor() {
         this._pool = createPool({
-            host: 'localhost',
-            user: 'catbox_api',
-            password: 'Ca@tbo0x',
-            database: 'catbox',
+            host: "localhost",
+            user: "catbox_api",
+            password: "Ca@tbo0x",
+            database: "catbox",
             waitForConnections: true,
             connectionLimit: 10,
-            queueLimit: 0
+            queueLimit: 0,
         });
 
-        this._pool.on('acquire', (c: PoolConnection) => {
-            console.log(`Connection ${c.threadId} acquired.`)
+        this._pool.on("acquire", (c: PoolConnection) => {
+            console.log(`Connection ${c.threadId} acquired.`);
         });
 
-        this._pool.on('connection', (c: PoolConnection) => {
-            c.query('SET autocommit=0');
-            console.log(`Connection ${c.threadId} created.`)
+        this._pool.on("connection", (c: PoolConnection) => {
+            c.query("SET autocommit=0");
+            console.log(`Connection ${c.threadId} created.`);
         });
 
-        this._pool.on('enqueue', () => {
-            console.log('Waiting for available connection slot');
+        this._pool.on("enqueue", () => {
+            console.log("Waiting for available connection slot");
         });
 
-        this._pool.on('release', (c: PoolConnection) => {
-            console.log(`Connection ${c.threadId} released.`)
+        this._pool.on("release", (c: PoolConnection) => {
+            console.log(`Connection ${c.threadId} released.`);
         });
     }
 }

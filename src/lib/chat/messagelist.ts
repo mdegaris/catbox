@@ -1,10 +1,8 @@
-import { Message } from './message';
+import { Message } from "./message";
 
 class MessageList {
-
     private list: Array<Message>;
     private latestMessageTime: Date | null;
-
 
     public getLastMessageTime(): Date | null {
         return this.latestMessageTime;

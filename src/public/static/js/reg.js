@@ -22,7 +22,7 @@ async function validationHandler(e, form) {
         jData[k] = v;
     };
 
-    let response = await fetch('/validate-reg-form', {
+    let response = await fetch('/validate-reg-dynamic', {
         headers: {
             'content-type': 'application/json',
         },

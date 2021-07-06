@@ -1,38 +1,35 @@
-import { Request } from 'express';
-import { sqlStatements } from '../db/sql/statements';
-import { transaction, TransactionType } from '../db/transaction';
-import { hashPassword, validPassword } from '../auth/password';
-
-
+import { Request } from "express";
+import { sqlStatements } from "../db/sql/statements";
+import { transaction, TransactionType } from "../db/transaction";
+import { hashPassword, validPassword } from "../auth/password";
 
 class Registration {
-
     private static readonly FORM_PARAMS: Record<string, string> = {
-        email: 'email',
-        password: 'passowrd',
-        birthdateDay: 'dobDay',
-        birthdateMonth: 'dobMonth',
-        birthdateYear: 'dobYear',
-        gender: 'gender'
-    }
+        email: "email",
+        password: "passowrd",
+        birthdateDay: "dobDay",
+        birthdateMonth: "dobMonth",
+        birthdateYear: "dobYear",
+        gender: "gender",
+    };
 
     // Static
 
     private static parseRequestBody(req: Request): any {
-
         let paramMap = new Map<string, string>();
         for (let pn in Registration.FORM_PARAMS) {
             if (pn in req.body) {
                 paramMap.set(pn, req.body[pn]);
             } else {
-
             }
         }
     }
 
-
     public static buildFromHttpRequest(request: Request): Registration {
-        const newReg = new Registration(request.body.email, request.body.password);
+        const newReg = new Registration(
+            request.body.email,
+            request.body.password
+        );
         return newReg;
     }
 
@@ -50,23 +47,22 @@ class Registration {
     private dobYear?: number;
 
     private emailAlreadyExists(): Promise<boolean> {
-        console.log('Check for duplicate email.');
+        console.log("Check for duplicate email.");
         return Promise.resolve(false);
     }
 
     private async validate(): Promise<Array<string>> {
-
-        console.log('Validate registration.');
+        console.log("Validate registration.");
 
         let validationErrors = Array<string>();
         const emailExists = await this.emailAlreadyExists();
 
         if (emailExists) {
-            validationErrors.push('Email already taken.');
+            validationErrors.push("Email already taken.");
         }
 
         if (Registration.validatePassword(this.plainPassword) === false) {
-            validationErrors.push('Password is invalid.');
+            validationErrors.push("Password is invalid.");
         }
 
         return Promise.resolve(validationErrors);
@@ -78,32 +74,34 @@ class Registration {
 
     public toString(): string {
         const thisObj = {
-            email: this.email
+            email: this.email,
         };
 
         return JSON.stringify(thisObj);
     }
 
     public async create(): Promise<Array<any>> {
-
         const hashedPassword = await hashPassword(this.plainPassword);
 
         return new Promise((resolve, reject) => {
             this.validate().then((valErrors) => {
                 if (valErrors.length > 0) {
-                    console.log('Invalid registration.');
+                    console.log("Invalid registration.");
                     reject(valErrors);
                 } else {
-                    console.log('Valid registration.');
+                    console.log("Valid registration.");
 
                     const bindVars = [this.email, hashedPassword];
-                    const newUserTrans = transaction(TransactionType.QUERY, sqlStatements.REGISTER_NEW_USER, bindVars);
+                    const newUserTrans = transaction(
+                        TransactionType.QUERY,
+                        sqlStatements.REGISTER_NEW_USER,
+                        bindVars
+                    );
                     resolve(newUserTrans);
                 }
             });
         });
     }
-
 
     constructor(em: string, pw: string) {
         this.email = em;

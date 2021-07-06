@@ -1,7 +1,6 @@
 import { User } from "../user/user";
 
 class Message {
-
     private text: string;
     private timestamp: Date;
     private user: User;
